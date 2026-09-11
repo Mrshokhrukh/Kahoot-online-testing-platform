@@ -7,4 +7,8 @@
 
 // CODE IS WRITTEN BY JOHONGIR
 
+<<<<<<< HEAD
 // CODE IS WRITTEN BY SUNNATBEK 
+=======
+// CODE IS WRITTEN BY ODIL
+>>>>>>> main
