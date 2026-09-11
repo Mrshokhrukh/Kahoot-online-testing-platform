@@ -4,5 +4,3 @@
 // CODE IS WRITTEN BY SARDOR
 
 // CODE IS WRITTEN BY SHOKHRUKH
-// CODE IS WRITTEN BY Otabek
-// CODE IS WRITTEN BY Zarrux menga teligramdan yozvoring
