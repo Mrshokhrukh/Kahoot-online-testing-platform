@@ -1,6 +1,64 @@
 # A'zo Boshqaruvi — Odiljon
 
 **Branch:** `feature/members`
+**To'rtinchi merge qilinadi — Zarrux bilan parallel.**
+
+---
+
+## Batafsil Vazifa Tavsifi
+
+### Loyiha nima va siz unda qanday rol o'ynaysiz?
+
+EduTest platformasida o'qituvchi guruh ichidagi o'quvchilarni ko'rishi, ularning statistikasini tekshirishi, agar kerak bo'lsa guruhdan chiqarishi kerak. Bu — **sizning vazifangiz**.
+
+Siz o'qituvchiga **o'quvchilar ro'yxatini** va **har o'quvchining profilini** ko'rsatadigan sahifalar yaratasiz. Bu sahifalar Zarrux yozgan `GroupDetailPage` dagi "O'quvchilar" tabidan ochiladi.
+
+### Haqiqiy stsenariy
+
+Sardor o'qituvchi "React kursi" guruhini ochdi (Zarrux sahifasi). "O'quvchilar" tabiga bosdi — **sizning** `/teacher/groups/abc123/members` sahifasi ochildi. U ko'radi: 22 ta o'quvchi, har birining qatnashuvi va o'rtacha bali. "Ali Karimov" kartasiga bosdi → **sizning** `StudentProfilePage` i ochildi. U yerda Alining so'nggi 5 ta test natijalari, "Batafsil analitika" tugmasi bor (Doniyor sahifasiga).
+
+### Siz kimni kutasiz?
+
+- **Zarrux** — `groupId` URL parametri (`useParams()` orqali olasiz). Zarrux sahifasidan navigatsiya keladi.
+- **Fuzayil** — `ROUTES.STUDENT_ANALYTICS` konstantasi (Doniyor sahifasiga link uchun).
+- **Azizbek** — `AppAvatar` (o'quvchi avatari), `AppModal` (o'chirish modal), `AppBadge`. Tayyor bo'lguncha oddiy komponentlar bilan yozing.
+
+### Kimlar sizni kutadi?
+
+- **Doniyor** — `StudentProfilePage` dagi "Batafsil analitika" tugmasi Doniyor sahifasiga yo'naltiradi (`/teacher/students/:studentId/analytics`)
+
+### Haftalik ish rejasi
+
+**1-kun:**
+- `src/mocks/membersMock.js` yarating
+- `useMemberList.js` — qidiruv va saralash bilan
+
+**2-kun:**
+- `StudentCard.jsx` — ism, avatar, qatnashuv foizi, o'rtacha ball
+- `MembersFilterBar.jsx` — qidiruv input + saralash select
+
+**3-kun:**
+- `RemoveStudentModal.jsx` — tasdiqlash modal
+- `MembersPage.jsx` — barchani birlashtirish
+- Brauzerda test: qidiruv ishlayaptimi?
+
+**4-kun:**
+- `useStudentProfile.js` — mock profil va test tarixi
+- `StudentStatsRow.jsx` — statistika satri
+
+**5-kun:**
+- `StudentProfilePage.jsx` — profil + so'nggi 5 test natijalari jadvali
+- PR oching
+
+### Muhim nuqtalar
+
+`useParams()` dan `groupId` va `studentId` olinadi. Ular mock ma'lumotlarga filter qilishda ishlatiladi.
+
+Qidiruv debounce: `setTimeout` bilan 300ms kechiktirib, har keystrokeda barcha list filter qilinmasin.
+
+`StudentCard` dagi "O'chirish" tugmasi bosilganda faqat `RemoveStudentModal` ochiladi — haqiqiy o'chirish modal tasdiqlangandan keyin bo'ladi.
+
+`StudentProfilePage` da so'nggi 5 test jadvali: test nomi, sana, ball (rangli: 90+ yashil, 60- qizil), qatnashdi ✅ / qatnashmadi ❌.
 
 ---
 

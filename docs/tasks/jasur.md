@@ -1,9 +1,74 @@
 # Savol Turlari UI — Jasur
 
 **Branch:** `feature/questions`
+**To'rtinchi merge qilinadi — Fuzayil bilan parallel (Otabek va Farid kutadi).**
 
 > Bu komponentlar Otabek (tahrirlash) va Farid (test ishlash) sahifalarida ishlatiladi.
 > Siz komponentlar yaratasiz — ular import qilib ishlatadi.
+
+---
+
+## Batafsil Vazifa Tavsifi
+
+### Loyiha nima va siz unda qanday rol o'ynaysiz?
+
+EduTest platformasida 4 turdagi savol bor: Quiz (4 variant), True/False (Ha/Yo'q), Kod yozish (Monaco Editor), Ochiq savol (matn). Har tur **ikkita rejimda** ko'rinadi: o'quvchi uchun (View) va o'qituvchi uchun (Editor).
+
+Siz bu loyihadagi **savol komponentlarini** yaratasiz. Bu komponentlar 2 ta boshqa dasturchi tomonidan ishlatiladi: Otabek (test tahrirlash) va Farid (test ishlash). Ularning sahifalari ishlashi uchun sizning komponentlaringiz tayyor bo'lishi kerak.
+
+### Haqiqiy stsenariy
+
+**Tahrirlash rejimi (Otabek ishlatadi):**
+O'qituvchi "useState nima?" savolini tahrirlayapti. Otabek yozgan `QuestionEditorWrapper` sizning `QuizQuestionEditor` ni import qiladi. Unda savol matni input, 4 ta variant input, to'g'ri javob radio button bor.
+
+**Test ishlash rejimi (Farid ishlatadi):**
+Ali o'quvchi 3-savolda: "useEffect faqat bir marta ishlaydi." — Ha yoki Yo'q? Farid yozgan `TestActivePage` sizning `QuestionDisplay` ni `mode='view'` bilan chaqiradi. Siz `TrueFalseView` ni ko'rsatasiz: 2 ta katta tugma.
+
+### Siz kimni kutasiz?
+
+**Hech kimni kutmaysiz.** Siz Fuzayil bilan bir vaqtda boshlaysiz. Monaco Editor o'rnatish: `npm install @monaco-editor/react`. Bu packageni o'rnatishdan oldin teamlead (Shokhrukh) ga yozing.
+
+### Kimlar sizni kutadi?
+
+- **Otabek** — `QuizQuestionEditor`, `TrueFalseEditor`, `CodeQuestionEditor`, `OpenQuestionEditor`
+- **Farid** — `QuestionDisplay` (barcha turlarni birlashtirgan universal komponent)
+
+### Haftalik ish rejasi
+
+**1-kun:**
+- `QuizQuestionView.jsx` — 4 ta variant tugma, tanlash, reveal logikasi
+- `QuizQuestionEditor.jsx` — savol matni + 4 variant input + to'g'ri javob radio
+
+**2-kun:**
+- `TrueFalseView.jsx` — 2 ta katta tugma (Ha/Yo'q)
+- `TrueFalseEditor.jsx` — savol + to'g'ri javob toggle
+- `OpenQuestionView.jsx` + `OpenQuestionEditor.jsx`
+
+**3-kun:**
+- `npm install @monaco-editor/react`
+- `useCodeEditor.js` — Monaco konfiguratsiyasi
+- `CodeQuestionView.jsx` — Monaco dark theme, JavaScript, min 200px
+
+**4-kun:**
+- `CodeQuestionEditor.jsx` — savol textarea + starter kod Monaco + til tanlash
+- Brauzerda test: barcha 4 tur ishlayaptimi?
+
+**5-kun:**
+- `QuestionDisplay.jsx` — universal komponent (mode='view'|'edit' bo'yicha to'g'ri komponent)
+- PR oching
+
+### Muhim nuqtalar
+
+`QuizQuestionView` da javob yuborilgandan keyin (`isAnswerSubmitted=true`) barcha variantlar `disabled` bo'lsin. Reveal bo'lganda (`isAnswerRevealed=true`): to'g'ri variant `bg-green-100 border-green-500`, noto'g'ri tanlangan `bg-red-100 border-red-500`.
+
+`QuestionDisplay` — bu barcha komponentlarning darvozasi. Tashqaridan faqat shu import qilinadi:
+```jsx
+<QuestionDisplay question={q} mode="view" selectedOptionIndex={...} onSelectOption={...} />
+```
+
+Monaco Editor — `@monaco-editor/react` paketi. Konfiguratsiya: `theme="vs-dark"`, `language="javascript"`, `height="200px"`.
+
+---
 
 ---
 

@@ -1,6 +1,80 @@
 # Student Dashboard — Jahongir
 
 **Branch:** `feature/student`
+**To'rtinchi merge qilinadi — Fuzayil bilan parallel.**
+
+---
+
+## Batafsil Vazifa Tavsifi
+
+### Loyiha nima va siz unda qanday rol o'ynaysiz?
+
+EduTest platformasida o'quvchilar uyda test ishlaydi. Ular guruhga qo'shiladi, testlarni ko'radi, natijalarni tekshiradi. Bu butun **o'quvchi interfeysi** — **sizning vazifangiz**.
+
+Siz o'qituvchi yuzining aksi bo'lgan **o'quvchi yuzini** yaratasiz. O'quvchi login qilgach (Parviz sahifasi, role='student') to'g'ridan-to'g'ri **sizning** sahifangizga tushadi.
+
+### Haqiqiy stsenariy
+
+Ali o'quvchi tizimga kirdi. `role='student'` — va to'g'ridan-to'g'ri **sizning** `/student/dashboard` ga tushdi. U ko'rdi:
+- "Salom, Ali! 1 ta guruhingiz bor"
+- "Bugun 20:00 da test bor — 3:20 qoldi" — "Testga kirish" tugmasi (vaqt yaqinlashganda aktiv)
+- So'nggi natijalar: 82 ball, 0 ball (qatnashmadi ❌)
+
+U "Guruhga qo'shilish" ugmasini bosdi → **sizning** `/student/join` ga o'tdi. 6 belgili kodni kiritdi → "React kursiga qo'shildingiz!"
+
+Kechki 19:55 da "Testga kirish" tugmasi aktiv bo'ldi → Farid sahifasiga o'tdi.
+
+### Siz kimni kutasiz?
+
+- **Fuzayil** — `studentStore` dan `myGroupList`, `upcomingTestList`, `myResultList`, va `ROUTES.TEST_WAITING` konstantasi.
+- **Parviz** — `authStore` dan `currentUser.name` (salom xabari uchun).
+- **Azizbek** — `AppCard`, `AppBadge`, `AppSpinner`, `EmptyState`.
+
+### Kimlar sizni kutadi?
+
+- **Farid** — "Testga kirish" tugmasi Farid yozgan `TestWaitingPage` ga (`/test/:testId/waiting`) yo'naltiradi
+
+### Haftalik ish rejasi
+
+**1-kun:**
+- `src/mocks/studentMock.js` yarating
+- `useStudentDashboard.js` — mock yuklash (setTimeout 600ms)
+
+**2-kun:**
+- `StudentStatsBar.jsx` — 3 ta statistika
+- `UpcomingTestCard.jsx` — test nomi, vaqt, qolgan vaqt countdown
+- "Testga kirish" tugmasi: faqat 15 daqiqadan kam qolganda aktiv
+
+**3-kun:**
+- `StudentDashboardPage.jsx` — barchani birlashtirish
+- Brauzerda test: qolgan vaqt countdown ishlayaptimi?
+
+**4-kun:**
+- `StudentGroupCard.jsx` → `StudentGroupsPage.jsx`
+- `JoinGroupForm.jsx` + `useJoinGroup.js` → `StudentJoinPage.jsx`
+- Brauzerda test: kod kiritish, muvaffaqiyat xabari
+
+**5-kun:**
+- `MyResultCard.jsx` + `useStudentResults.js` → `StudentResultsPage.jsx`
+- `ResultDetailView.jsx` → `StudentResultDetailPage.jsx`
+- PR oching
+
+### Muhim nuqtalar
+
+"Testga kirish" tugmasi logikasi:
+```js
+const minutesLeft = (new Date(test.scheduledAt) - Date.now()) / 60000
+const isActive = minutesLeft <= 15 && minutesLeft > 0
+```
+
+`JoinGroupForm` — 6 ta belgi kiritilganda: avtomatik "Qo'shilish" trigger qilish mumkin:
+```js
+if (inviteCode.length === INVITE_CODE_LENGTH) handleJoinGroup()
+```
+
+`StudentJoinPage` da muvaffaqiyat: modal emas, inline — "React kursiga qo'shildingiz! Guruhga o'ting →" + "Guruhlarni ko'rish" tugmasi.
+
+`ResultDetailPage` da savol bo'yicha ko'rish: to'g'ri = `bg-green-50` + ✓, noto'g'ri = `bg-red-50` + ✗.
 
 ---
 

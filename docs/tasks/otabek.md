@@ -1,6 +1,76 @@
 # AI Test Generatsiya — Otabek
 
 **Branch:** `feature/ai-generation`
+**To'rtinchi merge qilinadi — Jasur bilan parallel.**
+
+---
+
+## Batafsil Vazifa Tavsifi
+
+### Loyiha nima va siz unda qanday rol o'ynaysiz?
+
+EduTest platformasida o'qituvchi dars kiritgandan keyin (Marufjon sahifasi) AI yordamida test yaratatadi. Bu jarayon — **sizning vazifangiz**. Siz 3 bosqichli ekran qurasiz: sozlash → generatsiya animatsiyasi → natija ko'rish va tahrirlash.
+
+Siz platformaning **eng ko'rinarli** qismini yaratasiz: AI generatsiya animatsiyasi, preview ekrani, savol tahrirlash.
+
+### Haqiqiy stsenariy
+
+Sardor "2-dars: useState va useEffect" ni saqladi va "Saqlash va test yaratish" bosdi (Marufjon). **Sizning** `/teacher/lessons/l2/generate` sahifasi ochildi. U ko'radi:
+1. Chap tomonda: dars mazmuni (o'qituvchiga eslatish uchun)
+2. O'ng tomonda: sozlamalar — "20 ta savol", "Quiz ✓ T/F ✓ Kod ✓ Ochiq ✓", "O'rta qiyinlik"
+3. "AI bilan test yaratish" tugmasini bosdi → **generatsiya animatsiyasi** (3 soniya)
+4. "20 ta savol yaratildi" → `TestPreviewPage` ga o'tdi
+5. U yerda savollarni ko'rdi, 2-savolni tahrirlash kerak dedi → `TestEditPage` ga o'tdi
+6. Tahrirladi, "Saqlash" bosdi → Baxrom sahifasiga yo'naltirildi (test sozlash uchun)
+
+### Siz kimni kutasiz?
+
+- **Marufjon** — `lessonId` URL parametri. Siz `useParams()` dan olasiz va mock dars mazmunini ko'rsatish uchun ishlatiladi.
+- **Jasur** — `QuizQuestionEditor`, `TrueFalseEditor`, `CodeQuestionEditor`, `OpenQuestionEditor` komponentlari. Jasur yozguncha, `QuestionEditorWrapper` da placeholder `<div>Savol #{index}</div>` ko'rsating.
+
+### Kimlar sizni kutadi?
+
+- **Baxrom** — "Qabul qilish va davom etish" tugmasi Baxrom sahifasiga (`/teacher/tests/:testId/configure`) yo'naltiradi
+
+### Haftalik ish rejasi
+
+**1-kun:**
+- `src/mocks/aiMock.js` yarating — `mockGeneratedTest` ob'ekti
+- `useAiGenerate.js` hook — generationStatus: idle → loading → done
+
+**2-kun:**
+- `LessonContentPanel.jsx` — dars mazmunini ko'rsatish
+- `GenerationSettings.jsx` — slider + checkbox + select
+
+**3-kun:**
+- `GeneratingAnimation.jsx` — CSS animatsiya ("AI fikrlamoqda..." pulsing)
+- `AiGeneratePage.jsx` — 3 bosqichni birlashtirish
+- Brauzerda test: "AI bilan test yaratish" bosing, 3s kutib preview ko'rining
+
+**4-kun:**
+- `GeneratedTestPreview.jsx` — savollar ro'yxati (tur belgisi + matn)
+- `TestPreviewPage.jsx`
+
+**5-kun:**
+- `useTestEditor.js` — savol qo'shish/o'chirish/tahrirlash
+- `QuestionEditorWrapper.jsx` — Jasur komponentlarini import qiladi
+- `TestEditPage.jsx`
+- PR oching
+
+### Muhim nuqtalar
+
+`GeneratingAnimation` da animatsiya davomida sahifa o'zi scroll bo'lmasin: `overflow: hidden` asosiy wrapper da.
+
+`QuestionEditorWrapper` — savol turini tekshirib, Jasur komponentini import qiladi. Jasur tayyor bo'lguncha:
+```jsx
+function QuestionEditorWrapper({ question, onChange }) {
+  return <div className="border rounded p-4">Savol {question.type}: {question.questionText}</div>
+}
+```
+
+Keyin Jasur tayyor bo'lganda to'liq versiyani yozing.
+
+"Qabul qilish va davom etish" → `navigate(ROUTES.TEACHER_TEST_CONFIG.replace(':testId', 'new-test-id'))`
 
 ---
 

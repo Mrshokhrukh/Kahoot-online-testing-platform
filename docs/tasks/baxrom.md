@@ -1,6 +1,73 @@
 # Test Boshqaruvi & Jadval — Baxrom
 
 **Branch:** `feature/test-management`
+**To'rtinchi merge qilinadi — Otabek bilan parallel.**
+
+---
+
+## Batafsil Vazifa Tavsifi
+
+### Loyiha nima va siz unda qanday rol o'ynaysiz?
+
+EduTest platformasida AI test yaratilgandan keyin (Otabek sahifasi) o'qituvchi testni **sozlashi va vaqtini belgilashi** kerak. Bu — **sizning vazifangiz**.
+
+Siz o'qituvchi uchun test boshqaruv markazi yaratasiz: barcha testlar ro'yxati, har test konfiguratsiyasi (savol soni, davomiylik), va eng muhimi — **vaqt jadval** (qaysi kunda, soatda test bo'lishini belgilash). Test belgilangan vaqtda **barcha o'quvchilarga bir vaqtda ochiladi**.
+
+### Haqiqiy stsenariy
+
+Sardor Otabek sahifasidan "Qabul qilish va davom etish" tugmasini bosdi. **Sizning** `/teacher/tests/t1/configure` sahifasi ochildi. U:
+1. Test nomini tekshirdi: "5-dars testi"
+2. Savol soni: 20, davomiylik: 30 daqiqa
+3. Ko'rsatish tartibi: "Tasodifiy" tanladi
+4. Sana: 2026-10-13, soat: 20:00 tanladi
+5. "E'lon qilish" bosdi → toast: "Test 13-oktabr, soat 20:00 da boshlanadi"
+
+Keyingi kuni u `/teacher/tests` ga kirdi — status "Rejalashtirilgan" (sariq badge). Kechki 20:00 da status "Aktiv" (yashil) — "Monitoring" tugmasi paydo bo'ldi. U Sunnatbek sahifasiga o'tdi.
+
+### Siz kimni kutasiz?
+
+- **Otabek** — "Qabul qilish va davom etish" tugmasi sizning sahifangizga yo'naltiradi. Siz `testId` ni URL dan olasiz.
+- **Fuzayil** — `testStore` dan `setActiveTest`, `ROUTES.TEACHER_MONITOR` va `ROUTES.TEACHER_RESULTS` konstantalari.
+- **Azizbek** — `TestStatusBadge` uchun `AppBadge`, `ScheduleTimePicker` uchun oddiy input komponentlari.
+
+### Kimlar sizni kutadi?
+
+- **Sunnatbek** — `TestConfigPage` dagi "Monitoring" havolasi Sunnatbek sahifasiga (`/teacher/tests/:testId/monitor`) yo'naltiradi
+- **Shohjahon** — tugagan testlar "Natijalar" tugmasi Shohjahon sahifasiga yo'naltiradi
+
+### Haftalik ish rejasi
+
+**1-kun:**
+- `src/mocks/testsMock.js` yarating
+- `useTestList.js` — tab filtrlanuvchi ro'yxat
+
+**2-kun:**
+- `TestStatusBadge.jsx` — 3 rang: sariq/yashil/kulrang
+- `TestListCard.jsx` — test kartasi
+- `TestsPage.jsx` — tab filtrlash bilan
+
+**3-kun:**
+- `ScheduleTimePicker.jsx` — sana + soat input, o'tgan sana taqiqlangan
+- `TestTypeSelector.jsx` — tur nisbati sozlash
+
+**4-kun:**
+- `TestConfigForm.jsx` — barcha sozlamalar
+- `useTestConfig.js` — saqlash logikasi
+- `TestConfigPage.jsx`
+
+**5-kun:**
+- Brauzerda to'liq test: konfiguratsiya → e'lon qilish → TestsPage da status tekshirish
+- PR oching
+
+### Muhim nuqtalar
+
+`ScheduleTimePicker` da `<input type="date" min={today}>` — o'tgan sanani tanlash mumkin emas.
+
+"E'lon qilish" bosilganda: `isLoading=true` → mock 800ms → `showToast('Test 13-oktabr, soat 20:00 da boshlanadi', 'success')`.
+
+`TestsPage` dagi tab filtrlash: `activeTab === 'scheduled'` → `testList.filter(t => t.status === 'scheduled')`. Har tab o'chirilganda filteredList yangilansin.
+
+Test `status === 'active'` bo'lganda `TestConfigPage` readonly mode: barcha inputlar `disabled`, faqat "Monitoring" tugmasi ko'rinadi.
 
 ---
 

@@ -5,6 +5,67 @@
 
 ---
 
+## Batafsil Vazifa Tavsifi
+
+### Loyiha nima va siz unda qanday rol o'ynaysiz?
+
+EduTest platformasiga kirish uchun birinchi to'siq — bu sizning sahifalaringiz. O'qituvchi ham, o'quvchi ham dastlab sizning `LoginPage` ingizdan o'tadi. Siz faqat sahifalar yozmaysiz — siz butun autentifikatsiya tizimini qurасиz: kim kirdi, qanday rol bor, qayerga yo'naltirish kerak.
+
+### Haqiqiy stsenariy
+
+Sardor o'qituvchi (teacher) platformaga birinchi marta kirmoqchi. U brauzerda `edutest.uz` ni ochadi — `/login` sahifasi ochiladi (sizning sahifangiz). U email va parolini kiritadi, "Kirish" tugmasini bosadi. Platforma uning rolini aniqlaydi: `role: 'teacher'` — va `/teacher/dashboard` ga yo'naltiradi (Shaxruzning sahifasi).
+
+Ali esa o'quvchi (student). U ham shu `/login` sahifasini ko'radi, email-parolini kiritadi, platforma `role: 'student'` deb `/student/dashboard` ga jo'natadi (Jahongirning sahifasi).
+
+Agar yangi foydalanuvchi bo'lsa — `/register` sahifasiga o'tadi (ham sizning sahifangiz). U yerda **rol tanlash** eng muhim: "O'qituvchiman" yoki "O'quvchiman" — bu kartalar katta va aniq ko'rinishi kerak.
+
+### Siz kimni kutasiz?
+
+**Azizbek** — UI komponentlari: `AppButton`, `AppInput`, `AppCard`, `AppErrorMessage`. Azizbek komponentlarini tayyor qilguncha, siz oddiy HTML `<button>` va `<input>` bilan placeholder yozishingiz mumkin. Keyin almashtirасиз.
+
+**Fuzayil** — `authStore.js` dan `useAuthStore`, `setCurrentUser`, `setAuthToken`. Fuzayil store ni yozguncha, siz o'zingiz vaqtinchalik local state ishlatishingiz mumkin.
+
+### Kimlar sizni kutadi?
+
+- **Shaxruz** — teacher login qilmasa dashboard ko'rinmaydi, sizning authStore ga yozish kerak
+- **Jahongir** — student login qilmasa student dashboard ishlamaydi
+- **Fuzayil** — `ProtectedRoute` authStore ni tekshiradi, siz token to'g'ri yozmagan bo'lsangiz himoyalangan sahifalar ochilmaydi
+
+Amalda: siz tayyor bo'lmasdan, hech kim o'z sahifasini to'liq sinab ko'rolmaydi.
+
+### Haftalik ish rejasi
+
+**1-kun:**
+- `src/mocks/authMock.js` yarating
+- `useLoginForm.js` hook ni yozing — email, password, validatsiya, mock login
+- `LoginForm.jsx` — bu hook ni ishlatib forma
+
+**2-kun:**
+- `LoginPage.jsx` — forma + sahifa dizayni (logo yuqorida, forma markazda)
+- Brauzerda oching, test qiling: bo'sh yuborilsa xato chiqadimi, spinner ishlayaptimi?
+
+**3-kun:**
+- `RoleSelector.jsx` — ikkita katta karta (Teacher / Student), biri tanlananda active ko'rinishi
+- `useRegisterForm.js` — barcha validatsiyalar bilan (parollar mosligini tekshirish ham)
+
+**4-kun:**
+- `RegisterForm.jsx` → `RegisterPage.jsx`
+- Teacher sifatida register qiling → login qiling → dashboard ga bordi? Test qiling
+
+**5-kun:**
+- `ForgotPasswordForm.jsx` → `ForgotPasswordPage.jsx`
+- Barcha holatlari tekshiring, PR oching
+
+### Muhim nuqtalar
+
+1. Login muvaffaqiyatli bo'lganda `localStorage.setItem('authToken', 'mock-token')` qiling — Fuzayilning `ProtectedRoute` shu token bor-yo'qligini tekshiradi.
+
+2. `currentUser` ob'ekti aynan shu formatda bo'lsin: `{ id, name, email, role }` — Shaxruz va Jahongir ism ko'rsatish uchun `currentUser.name` ni ishlatadi.
+
+3. Ro'yxatdan o'tganida `role` aniq saqlansin: `'teacher'` yoki `'student'` — boshqa qiymat bo'lsa ProtectedRoute noto'g'ri yo'naltiradi.
+
+---
+
 ## Sizga tegishli sahifalar
 
 | Sahifa | Route | Kimga |

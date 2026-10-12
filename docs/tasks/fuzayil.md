@@ -5,6 +5,76 @@
 
 ---
 
+## Batafsil Vazifa Tavsifi
+
+### Loyiha nima va siz unda qanday rol o'ynaysiz?
+
+EduTest — o'qituvchilarga AI yordamida uy vazifasi test yaratib, o'quvchilarni nazorat qiladigan platforma.
+
+Siz bu loyihadagi **muhandislik asosi** siz. Siz sahifa ham, komponent ham yozmaysiz — lekin siz yozgan narsalarsiz hech bir sahifa to'g'ri ishlamaydi. Tasavvur qiling: Parviz login sahifasini yozdi, lekin `authStore` yo'q — token qayerga saqlanadi? Zarrux guruh yaratdi, lekin `groupStore` yo'q — qayerda saqlanadi? Fuzayil yozgan store'lar — barcha feature lar uchun umumiy xotira.
+
+### Loyiha arxitekturasida sizning o'rningiz
+
+```
+Brauzer ochiladi
+    → App.jsx (sizning router + providers)
+        → /login ga boradi (Parviz sahifasi)
+        → Login muvaffaqiyatli
+        → authStore.setCurrentUser() chaqiriladi (sizning store)
+        → router ProtectedRoute tekshiradi (sizning ProtectedRoute)
+        → role=teacher → /teacher/dashboard (Shaxruz sahifasi)
+```
+
+Barcha yo'l (routing) sizniki. `ROUTES` konstantasi sizniki. Barcha store'lar sizniki. Siz bu narsalarni noto'g'ri yozsangiz — butun loyiha buziladi.
+
+### Siz kimni kutasiz?
+
+**Hech kimni.** Siz Azizbek bilan parallel boshlaysiz. Sizga UI komponent kerak emas — faqat logika va konfiguratsiya.
+
+### Kimlar sizni kutadi?
+
+- **Parviz** — `useAuthStore` import qilishi kerak (1-kun kerak)
+- **Fuzayil o'zi** — `ROUTES` konstantasi boshqa barcha dasturchilar ishlatadi
+- **Shaxruz, Zarrux, Odiljon, Marufjon** — `groupStore`, `lessonStore` larini kutadi
+- **Farid, Sunnatbek** — `testStore` ni kutadi
+- **Jahongir** — `studentStore` ni kutadi
+
+### Haftalik ish rejasi
+
+**1-kun (eng muhim):**
+- `src/constants/routes.js` — barcha route'larni yozing. Bu fayl birinchi bo'lishi shart — boshqa 14 dasturchi `navigate(ROUTES.TEACHER_DASHBOARD)` deb ishlatadi
+- `src/constants/testConstants.js` — `QUESTION_TYPES`, `USER_ROLES`, `INVITE_CODE_LENGTH`
+- `src/store/authStore.js` — Parviz kutayapti
+
+**2-kun:**
+- `src/store/groupStore.js` — Zarrux kutayapti
+- `src/store/lessonStore.js` — Marufjon kutayapti
+- `src/store/testStore.js` — Baxrom, Farid, Sunnatbek kutayapti
+
+**3-kun:**
+- `src/store/studentStore.js` — Jahongir kutayapti
+- `src/router/ProtectedRoute.jsx` — authStore dan currentUser tekshiradi
+
+**4-kun:**
+- `src/router/index.jsx` — barcha route'larni ulaш. Sahifalar hali tayyor bo'lmasa — placeholder yozasiz
+- `src/main.jsx` + `src/App.jsx` — RouterProvider bilan
+
+**5-kun:**
+- Barcha route'lar ishlayaptimi tekshiring (brauzerda har URL ni oching)
+- PR oching
+
+### Muhim nuqtalar
+
+`ROUTES` ob'ektini yozganda — boshqa dasturchilar bilan kelishilgan nom formatiga rioya qiling. Masalan, `ROUTES.TEACHER_DASHBOARD` — bu Shaxruz `navigate(ROUTES.TEACHER_DASHBOARD)` deb ishlatadi. Agar siz `ROUTES.DASHBOARD` deb yozsangiz — Shaxruz noto'g'ri nom topadi va xato chiqadi.
+
+`ProtectedRoute` ikki holatni tekshiradi:
+1. `currentUser` yo'q → `/login` ga qaytarish
+2. `currentUser.role` noto'g'ri → `/login` ga qaytarish
+
+Teacher sahifasi `/teacher/*` — faqat `role='teacher'` uchun. Student sahifasi `/student/*` — faqat `role='student'` uchun. Test session `/test/*` — ikkalasi uchun ham ochiq.
+
+---
+
 ## Sizga tegishli fayllar
 
 ```

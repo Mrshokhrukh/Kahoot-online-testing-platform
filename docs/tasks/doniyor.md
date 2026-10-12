@@ -1,6 +1,81 @@
 # Analitika & Grafiklar — Doniyor
 
 **Branch:** `feature/analytics`
+**To'rtinchi merge qilinadi — Shohjahon bilan parallel.**
+
+---
+
+## Batafsil Vazifa Tavsifi
+
+### Loyiha nima va siz unda qanday rol o'ynaysiz?
+
+EduTest platformasida o'qituvchi guruh va o'quvchilar bo'yicha **statistik tahlil** ko'rishi kerak: vaqt o'tishi bilan o'zlashtirish qanday o'zgardi? Kim eng zo'r, kim orqada? Qaysi savol turi qiyin? Bu — **sizning vazifangiz**.
+
+Siz `recharts` kutubxonasi bilan **grafik sahifalar** yaratasiz. Bu sahifalar platformaning "tahlil" qatlami — o'qituvchiga chuqur ma'lumot beradi.
+
+### Haqiqiy stsenariy
+
+Sardor o'qituvchi Shohjahon sahifasida (natijalar) "Ali Karimov" ismi bosildi → **sizning** `/teacher/students/s1/analytics` sahifasi ochildi. U ko'rdi:
+
+- Chiziqli grafik: Ali oxirgi 3 testda 55 → 70 → 85 ball olgan (o'sish!)
+- Radar grafik: Savol turlari bo'yicha — Quiz 85%, T/F 90%, Kod 60%, Ochiq 45%
+- So'nggi 10 test jadvali
+
+Guruh analitikasi: `/teacher/groups/g1/analytics` da:
+- Guruh o'rtacha bali vaqt o'tishi bilan (lineChart)
+- Har o'quvchi ball solishtirish (barChart)
+- Qatnashish foizi (pieChart)
+
+### Siz kimni kutasiz?
+
+- **Shohjahon** — `studentId` bilan sizning sahifangizga link qo'shadi. `useParams()` dan `studentId` olasiz.
+- **Odiljon** — `StudentProfilePage` dagi "Batafsil analitika" tugmasi ham sizga yo'naltiradi.
+- **Fuzayil** — `ROUTES.STUDENT_ANALYTICS` va `ROUTES.TEACHER_ANALYTICS` konstantalari.
+- **Azizbek** — `AppSpinner`, `EmptyState` komponentlari. `recharts` ni o'zingiz o'rnatishingiz kerak: `npm install recharts` (teamlead tasdiqlashi kerak — bu yangi package).
+
+### Kimlar sizni kutadi?
+
+Hech kim. Bu yakuniy sahifalar — boshqa sahifalardan siz tomonga navigatsiya keladi, sizdan chiqish yo'q.
+
+### Haftalik ish rejasi
+
+**1-kun:**
+- `npm install recharts` (teamlead ruxsatini oling)
+- `src/mocks/analyticsMock.js` yarating
+- `useGroupAnalytics.js` — mock ma'lumot + vaqt filter
+
+**2-kun:**
+- `GroupProgressChart.jsx` — LineChart, ResponsiveContainer
+- `StudentComparisonChart.jsx` — BarChart (gorizontal)
+- Brauzerda test: grafiklar ko'rinayaptimi?
+
+**3-kun:**
+- `AttendanceRateCard.jsx` — PieChart
+- `TopPerformersCard.jsx` — top 3 jadval
+- `AnalyticsFilterBar.jsx` — "7 kun / 30 kun / Barchasi"
+
+**4-kun:**
+- `GroupAnalyticsPage.jsx` — barchani birlashtirish
+
+**5-kun:**
+- `useStudentAnalytics.js` + `StudentProgressChart.jsx` + `SubjectStrengthChart.jsx`
+- `StudentAnalyticsPage.jsx`
+- PR oching
+
+### Muhim nuqtalar
+
+Barcha grafiklar `ResponsiveContainer width="100%" height={300}` ichida bo'lsin — mobildan desktopgacha moslashadi.
+
+Grafik ranglar: `stroke="#2563EB"` (blue-600), `fill="#22C55E"` (green-500), `fill="#FACC15"` (yellow-400).
+
+Tooltip — O'zbek tilida:
+```jsx
+<Tooltip formatter={(value, name) => [`${value}%`, 'O\'rtacha ball']} labelFormatter={(date) => `Sana: ${date}`} />
+```
+
+`AnalyticsFilterBar` ning filter logikasi: `filteredData = allData.filter(d => new Date(d.date) >= startDate)`.
+
+Ma'lumot bo'sh bo'lganda: `if (data.length === 0) return <EmptyState text="Hali yetarli ma'lumot yo'q" />`
 
 ---
 

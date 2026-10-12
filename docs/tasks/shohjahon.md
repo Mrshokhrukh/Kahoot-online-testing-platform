@@ -1,6 +1,77 @@
 # Test Natijalari — Shohjahon
 
 **Branch:** `feature/results`
+**To'rtinchi merge qilinadi — Sunnatbek bilan parallel.**
+
+---
+
+## Batafsil Vazifa Tavsifi
+
+### Loyiha nima va siz unda qanday rol o'ynaysiz?
+
+EduTest platformasida test tugagandan keyin o'qituvchi natijalarni ko'rishi kerak: kim qatnashdi, kim necha ball oldi, qaysi savol qiyin bo'ldi. Bu ma'lumot — **sizning vazifangiz**.
+
+Siz o'qituvchi uchun **natijalar tahlili sahifalarini** yaratasiz. Bu sahifalar test tugagandan keyin avtomatik ochiladi (Sunnatbek sahifasidan redirect).
+
+### Haqiqiy stsenariy
+
+Test tugadi. Sunnatbek sahifasi "Test tugadi! Natijalar" tugmasini ko'rsatdi. Sardor bosdi — **sizning** `/teacher/tests/t1/results` sahifasi ochildi.
+
+U ko'rdi:
+- Yuqorida: 5 ta statistika — "18/22 qatnashdi", "O'rtacha ball: 73"
+- Qatnashish jadvali — Ali ✅ 20:00–20:28, Vali ❌
+- Ball jadvali (saralangan): Ali 95/100 (#1), Vali 42/100 (#18)
+- Savol tahlili: "3-savol eng qiyin — faqat 44% to'g'ri javob berdi"
+- "CSV eksport" tugmasi
+
+Ali Karimov ismi bosildi → **Doniyor sahifasi** ochildi (batafsil analitika).
+
+### Siz kimni kutasiz?
+
+- **Sunnatbek** — test tugagach sizning sahifangizga redirect keladi. `testId` URL parametri.
+- **Fuzayil** — `ROUTES.STUDENT_ANALYTICS` konstantasi (Doniyor sahifasiga link uchun).
+- **Azizbek** — `ExportButton` uchun `AppButton`, jadvallar uchun `AppCard`.
+
+### Kimlar sizni kutadi?
+
+- **Doniyor** — `ScoreTable` dagi o'quvchi ismi bosilganda Doniyor sahifasiga (`/teacher/students/:studentId/analytics`) yo'naltiriladi
+
+### Haftalik ish rejasi
+
+**1-kun:**
+- `src/mocks/resultsMock.js` yarating
+- `useTestResults.js` — natijalar + saralash logikasi
+
+**2-kun:**
+- `ResultsSummaryBar.jsx` — 5 ta statistika kartasi
+- `AttendanceTable.jsx` — qatnashish jadvali
+
+**3-kun:**
+- `ScoreTable.jsx` — saralash funksiyasi (ustun bosib saralash)
+- Brauzerda test: saralash ishlayaptimi?
+
+**4-kun:**
+- `QuestionAnalysisPanel.jsx` — qaysi savol qiyin foiz bilan
+- `ExportButton.jsx` — CSV blob eksport
+
+**5-kun:**
+- `TestResultsPage.jsx` — barchani birlashtirish
+- `useGroupResults.js` → `GroupResultsPage.jsx`
+- PR oching
+
+### Muhim nuqtalar
+
+`ScoreTable` da saralash: ustun sarlavhasiga bosilganda `sortField` o'zgaradi, `sortDirection` toggle bo'ladi (`asc`↔`desc`). `useMemo` bilan `sortedScoreList` hisoblanadi.
+
+`ExportButton` — haqiqiy CSV format kerak emas, shunchaki blob:
+```js
+const csvContent = scoreList.map(r => `${r.name},${r.score},${r.percentage}`).join('\n')
+const blob = new Blob([csvContent], { type: 'text/csv' })
+const url = URL.createObjectURL(blob)
+const link = document.createElement('a'); link.href = url; link.download = 'natijalar.csv'; link.click()
+```
+
+Ball rangi: `score >= 90` → `text-green-600`, `score < 60` → `text-red-600`, qolganlar standart.
 
 ---
 

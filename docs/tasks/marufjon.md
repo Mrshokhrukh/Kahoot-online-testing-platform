@@ -1,6 +1,71 @@
 # Dars Builder — Marufjon
 
 **Branch:** `feature/lessons`
+**To'rtinchi merge qilinadi — Zarrux bilan parallel.**
+
+---
+
+## Batafsil Vazifa Tavsifi
+
+### Loyiha nima va siz unda qanday rol o'ynaysiz?
+
+EduTest platformasida test yaratishning birinchi qadami — **dars kiritish**. O'qituvchi dars o'tgandan keyin dars mavzusini, o'tilgan narsalarni yozadi. Keyin AI shu mazmundan test yaratadi. Bu kiritish sahifasi — **sizning vazifangiz**.
+
+Siz o'qituvchiga **dars yaratish va ko'rish** imkonini berasiz. Siz yozgan `LessonDetailPage` dagi "Test yaratish" tugmasi Otabek sahifasiga yo'naltiradi — ya'ni siz Otabekning darvozasiasiz.
+
+### Haqiqiy stsenariy
+
+Sardor o'qituvchi "React kursi" guruhini ochdi (Zarrux sahifasi), "Darslar" tabiga bosdi — **sizning** `/teacher/groups/abc123/lessons` sahifasi ochildi. "Yangi dars" bosdi. **Sizning** `LessonNewPage` i ochildi. U kiritdi:
+- Mavzu: "useState va useEffect"
+- Darsda o'tilganlar: "useState hook bilan state boshqarish, useEffect bilan side effect..."
+- Teglar: useState, useEffect, Hooks
+- "Saqlash va test yaratish" bosdi
+
+Va u **Otabek sahifasiga** (`/teacher/lessons/l2/generate`) yo'naltirildi.
+
+### Siz kimni kutasiz?
+
+- **Zarrux** — `groupId` URL parametri. Zarrux sahifasining "Darslar" tabidan navigatsiya keladi.
+- **Fuzayil** — `lessonStore` dan `setActiveLesson`, `ROUTES.TEACHER_AI_GENERATE` konstantasi.
+- **Azizbek** — `LessonStatusBadge` uchun `AppBadge`, `LessonCard` uchun `AppCard`.
+
+### Kimlar sizni kutadi?
+
+- **Otabek** — `LessonDetailPage` dagi "Test yaratish" tugmasi Otabek sahifasiga `lessonId` bilan yo'naltiradi. Otabek `lessonContent` ni ko'rsatishi kerak — siz yozgan mock mazmun shu yerda bo'ladi.
+
+### Haftalik ish rejasi
+
+**1-kun:**
+- `src/mocks/lessonsMock.js` yarating
+- `useLessonList.js` hook — mock darslar
+
+**2-kun:**
+- `LessonStatusBadge.jsx` — 3 holat: "Test yo'q" / "Rejalashtirilgan" / "O'tdi"
+- `TopicTagList.jsx` — teglar ko'rinishi
+- `LessonCard.jsx`
+
+**3-kun:**
+- `LessonsPage.jsx` — xronologik ro'yxat
+- Brauzerda tekshiring: bo'sh holat, yuklash animatsiyasi
+
+**4-kun:**
+- `useLessonForm.js` — validatsiya bilan (content min 50 belgi, title majburiy)
+- `LessonForm.jsx` — tag input (Enter/vergul bilan teg qo'shish)
+
+**5-kun:**
+- `LessonNewPage.jsx` + `LessonDetailPage.jsx`
+- "Saqlash va test yaratish" → Otabek sahifasiga redirect
+- PR oching
+
+### Muhim nuqtalar
+
+Tag input mexanizmi: `topicList` state da teglar saqlangan. Input da Enter yoki vergul bosilganda `addTopic()` chaqiriladi, yangi teg qo'shiladi. Teg yonidagi `×` bosilganda `removeTopic()`.
+
+`LessonDetailPage` dagi `LessonStatusBadge`:
+- `testStatus === 'none'` → sariq "Test yaratilmagan" + "Test yaratish" tugmasi
+- `testStatus === 'completed'` → yashil "Test o'tdi" + "Natijalar" tugmasi
+
+"Saqlash va test yaratish": `navigate(ROUTES.TEACHER_AI_GENERATE.replace(':lessonId', lessonId))`
 
 ---
 

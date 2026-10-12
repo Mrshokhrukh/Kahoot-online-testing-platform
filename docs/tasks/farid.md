@@ -1,6 +1,82 @@
 # Student Test Xonasi — Farid
 
 **Branch:** `feature/test-session`
+**To'rtinchi merge qilinadi — Jasur bilan parallel.**
+
+---
+
+## Batafsil Vazifa Tavsifi
+
+### Loyiha nima va siz unda qanday rol o'ynaysiz?
+
+EduTest platformasida barcha o'quvchilar belgilangan vaqtda bir vaqtda test ishlaydi. Bu tajriba — **sizning vazifangiz**. Siz 3 sahifa yaratasiz: kutish → test ishlash → yakunlash.
+
+Siz platformaning **o'quvchi uchun eng muhim sahifalarini** yaratasiz — bu yerda haqiqiy test ishlash sodir bo'ladi. Vaqt bosimi, savol navigatsiyasi, avtomatik yuborish — barchasi sizda.
+
+### Haqiqiy stsenariy
+
+Ali o'quvchi kechki 19:50 da dashboarddan "Testga kirish" tugmasini bosdi (Jahongir sahifasi). **Sizning** `/test/test1/waiting` sahifasi ochildi. U ko'rdi: katta sanoq — "10:00", "React kursida 18 ta o'quvchi ulandi".
+
+20:00 da sanoq 0 ga yetdi — **sizning** `TestActivePage` i ochildi. 30 daqiqa davomida u 20 ta savolni ishladi:
+- 1-savol: Quiz — Jasur yozgan `QuizQuestionView` ko'rindi
+- 5-savol: Kod yozish — Monaco Editor ochildi
+- "Testni yakunlash" bosdi
+
+**Sizning** `TestCompletePage` i ochildi: "20 ta savoldan 18 tasiga javob berdingiz."
+
+### Siz kimni kutasiz?
+
+- **Jasur** — `QuestionDisplay` komponenti. Jasur tayyor bo'lguncha, o'zingiz placeholder yozing: `<div>Savol: {question.questionText}</div>`. Keyin almashtiring.
+- **Fuzayil** — `testStore` dagi `currentAnswers` ob'ekti (javoblarni saqlash uchun), `ROUTES.TEST_WAITING` va `ROUTES.TEST_ACTIVE`.
+
+### Kimlar sizni kutadi?
+
+- **Shohjahon** — "Natijalar" tugmasi `TestCompletePage` da Shohjahon sahifasiga yo'naltiradi (o'qituvchi natijalarni ko'radi)
+- **Jahongir** — `TestWaitingPage` ga Jahongir sahifasidan redirect keladi
+
+### Haftalik ish rejasi
+
+**1-kun:**
+- `src/mocks/testSessionMock.js` yarating
+- `useTestTimer.js` — countdown + test timer
+
+**2-kun:**
+- `CountdownTimer.jsx` — soat:daqiqa:soniya format
+- `TestWaitingPage.jsx` — 30s mock countdown, keyin avtomatik redirect
+- Brauzerda test: countdown ishlayaptimi?
+
+**3-kun:**
+- `TestHeader.jsx` — test nomi, savol hisobi, qolgan vaqt
+- `TestProgressBar.jsx` — progress foizi
+- `AnswerSubmitButton.jsx` — "Keyingi" yoki "Yakunlash"
+
+**4-kun:**
+- `useTestSession.js` — joriy savol indeksi, javoblar yig'ish, submit
+- `TestActivePage.jsx` — barchani birlashtirish
+- `beforeunload` ogohlantirish qo'shing
+
+**5-kun:**
+- `TestCompleteScreen.jsx` → `TestCompletePage.jsx`
+- To'liq flow brauzerda test qiling
+- PR oching
+
+### Muhim nuqtalar
+
+`useTestTimer.js` — ikkita timer boshqaradi:
+1. Testgacha qolgan vaqt (`countdownSeconds`) — 0 ga yetganda `isTestStarted=true`
+2. Test davomiylik vaqti (`remainingTestSeconds`) — 0 ga yetganda avtomatik yuborish
+
+`beforeunload` event: faqat `isTestStarted=true` bo'lganda faol bo'lsin:
+```js
+useEffect(() => {
+  if (!isTestStarted) return
+  const handler = (e) => { e.preventDefault(); e.returnValue = '' }
+  window.addEventListener('beforeunload', handler)
+  return () => window.removeEventListener('beforeunload', handler)
+}, [isTestStarted])
+```
+
+Javoblar `{ [questionId]: answer }` formatda saqlanadi — `testStore.currentAnswers` da.
 
 ---
 

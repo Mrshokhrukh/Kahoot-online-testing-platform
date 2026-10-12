@@ -1,6 +1,79 @@
 # Jonli Monitoring — Sunnatbek
 
 **Branch:** `feature/monitoring`
+**To'rtinchi merge qilinadi — Baxrom bilan parallel.**
+
+---
+
+## Batafsil Vazifa Tavsifi
+
+### Loyiha nima va siz unda qanday rol o'ynaysiz?
+
+EduTest platformasida test aktiv bo'lganida o'qituvchi real-time o'quvchilarni kuzatishi kerak: kim ulandi, kim ishlayapti, kim tugatdi, kim ulanmadi. Bu — **sizning vazifangiz**.
+
+Siz platformadagi **eng dinamik sahifani** yaratasiz: bitta sahifa, lekin har 2 soniyada yangilanib turadi. O'qituvchi test davomida shu sahifada o'tiradi va hamma narsani kuzatadi.
+
+### Haqiqiy stsenariy
+
+Sardor o'qituvchi kechki 20:00 da Baxrom sahifasidan "Monitoring" tugmasini bosdi. **Sizning** `/teacher/tests/t1/monitor` sahifasi ochildi. U ko'rdi:
+
+- Yuqorida: "5-dars testi — React kursi" + katta qizil timer: "28:45"
+- "18 / 22 ta o'quvchi ulandi"
+- Grid: 22 ta karta — Ali ✅ Tugatdi (20/20), Vali 🔵 Ishlayapti (12/20), Sardor ⚪ Ulanmadi
+
+Har 2 soniyada ekran yangilanadi: yana 1 ta o'quvchi "Tugatdi" bo'ladi. 28 daqiqada hammasi tugadi.
+
+### Siz kimni kutasiz?
+
+- **Baxrom** — `testId` URL parametri. Baxrom sahifasidan "Monitoring" tugmasi sizga yo'naltiradi.
+- **Fuzayil** — `ROUTES.TEACHER_RESULTS` konstantasi (test tugagandan keyin natijalar sahifasiga).
+- **Azizbek** — `AppSpinner` (yuklanish uchun), `AppModal` (to'xtatish tasdiqlash uchun), `AppBadge`.
+
+### Kimlar sizni kutadi?
+
+- **Shohjahon** — test tugagandan keyin sizning sahifangizdan "Natijalar" tugmasi Shohjahon sahifasiga yo'naltiradi
+
+### Haftalik ish rejasi
+
+**1-kun:**
+- `src/mocks/monitoringMock.js` yarating — `mockMonitoringData`, `mockStudentStatusList`
+- `useMonitoring.js` — yuklanish + 2 soniyalik simulatsiya + countdown
+
+**2-kun:**
+- `LiveTimer.jsx` — qolgan vaqt MM:SS formatda
+- `MonitoringHeader.jsx` — test nomi + timer + holat badge + "To'xtatish" tugmasi
+
+**3-kun:**
+- `OverallProgressPanel.jsx` — katta sonlar + progress bar
+- `StudentStatusCard.jsx` — ism, holat, progress
+
+**4-kun:**
+- `StudentStatusGrid.jsx` — responsive grid
+- `QuestionStatsPanel.jsx` — joriy savol statistikasi
+
+**5-kun:**
+- `MonitoringPage.jsx` — barchani birlashtirish
+- Simulatsiya to'g'ri ishlayaptimi tekshiring: har 2s da o'quvchi holati o'zgaryaptimi?
+- PR oching
+
+### Muhim nuqtalar
+
+Real-time simulatsiya `useMonitoring.js` ichida:
+```js
+setInterval(() => {
+  setStudentStatusList(prev => {
+    const inProgressIndex = prev.findIndex(s => s.status === 'in_progress')
+    if (inProgressIndex === -1) return prev
+    const updated = [...prev]
+    updated[inProgressIndex] = { ...updated[inProgressIndex], status: 'completed', currentQuestion: updated[inProgressIndex].totalQuestions }
+    return updated
+  })
+}, 2000)
+```
+
+Timer `useEffect` cleanup: `return () => clearInterval(interval)` — sahifadan chiqilganda interval to'xtaydi.
+
+"Testni to'xtatish" — `AppModal` da tasdiqlash, keyin mock to'xtatish + `navigate(ROUTES.TEACHER_RESULTS.replace(':testId', testId))`.
 
 ---
 

@@ -1,6 +1,66 @@
 # Teacher Dashboard — Shaxruz
 
 **Branch:** `feature/teacher-dashboard`
+**To'rtinchi merge qilinadi — infra tayyor bo'lgandan keyin.**
+
+---
+
+## Batafsil Vazifa Tavsifi
+
+### Loyiha nima va siz unda qanday rol o'ynaysiz?
+
+EduTest — o'qituvchi dars o'tgandan keyin AI yordamida test tayyorlaydigan, belgilangan vaqtda barcha o'quvchilar bir vaqtda ishlaydigan avtomatik nazorat platformasi.
+
+Siz bu loyihadagi **o'qituvchi yuzini** qurasiz. O'qituvchi login qilgandan keyin birinchi ko'radigan narsa — **sizning sahifangiz**. Platformaning umumiy holatini bir joyda ko'radi: nechta guruh, nechta o'quvchi, qanday testlar bor, yaqinlashtiyotgan testlar.
+
+### Haqiqiy stsenariy
+
+Sardor o'qituvchi tizimga kirdi. Parviz yozgan `/login` sahifasidan o'tib, `role='teacher'` aniqlandi — va to'g'ridan-to'g'ri **sizning** `/teacher/dashboard` ga tushdi. U ko'radi:
+- "Siz 4 ta guruh, 87 ta o'quvchi bilan ishlayapsiz"
+- "Bugun kechki 20:00 da React kursida test bor — 3 soat qoldi"
+- "React kursi" kartasiga bosganda → Zarrux sahifasi (`/teacher/groups/g1`)
+
+### Siz kimni kutasiz?
+
+- **Fuzayil** — `authStore` dan `useAuthStore().currentUser` (ism ko'rsatish uchun), `ROUTES` konstantasi (navigatsiya uchun). Fuzayil yozguncha, o'zingiz vaqtinchalik `{ name: 'Sardor Usmonov' }` mock ishlatishingiz mumkin.
+- **Azizbek** — `AppSidebar`, `AppLayout`, `AppCard`, `AppSpinner`. Azizbek tayyor bo'lguncha oddiy `<div>` bilan yozing.
+
+### Kimlar sizni kutadi?
+
+- **Zarrux** — "Guruhga o'tish" tugmasi sizdan Zarrux sahifasiga yo'naltiradi
+- **Sunnatbek** — "Monitoring" tugmasi sizdan Sunnatbek sahifasiga yo'naltiradi
+- **Baxrom** — yaqinlashtiyotgan testlar Baxrom testConfigPage ga bog'langan
+
+### Haftalik ish rejasi
+
+**1-kun:**
+- `src/mocks/dashboardMock.js` yarating — `mockDashboardStats`, `mockGroupSummaryList`, `mockUpcomingTestList`
+- `useTeacherDashboard.js` hook — mock yuklash (setTimeout 600ms)
+
+**2-kun:**
+- `StatsOverview.jsx` — 4 ta statistika kartasi
+- Brauzerda tekshiring: isLoading holati spinner ko'rsatadimi?
+
+**3-kun:**
+- `GroupSummaryCard.jsx` — guruh nomi, o'quvchilar soni, "Ko'rish" tugmasi
+- `UpcomingTestCard.jsx` — test nomi, vaqt, countdown (`setInterval` 1 daqiqa)
+
+**4-kun:**
+- `QuickActions.jsx` — 2 ta tugma
+- `TeacherDashboardPage.jsx` — barchani birlashtiring
+- Sahifani to'liq brauzerda oching, barcha holatlari tekshiring
+
+**5-kun:**
+- `TeacherProfilePage.jsx` — ism, email ko'rsatish, parol o'zgartirish forma
+- PR oching
+
+### Muhim nuqtalar
+
+`currentUser.name` — dashboardda "Salom, Sardor!" deb ko'rsatiladi. Fuzayil `authStore` ni yozguncha `const currentUser = { name: 'Sardor Usmonov' }` deb hardcode qiling.
+
+`UpcomingTestCard` da qolgan vaqt hisoblash: `scheduledAt` — `Date.now()` farqini soat/daqiqaga aylantiring. `setInterval(1 daqiqa)` bilan yangilansin.
+
+Sidebar navigatsiya: teacher uchun navItems = `[{ label: 'Dashboard', route: ROUTES.TEACHER_DASHBOARD }, { label: 'Guruhlar', route: ROUTES.TEACHER_GROUPS }, ...]`
 
 ---
 

@@ -1,6 +1,67 @@
 # Guruh Boshqaruvi — Zarrux
 
 **Branch:** `feature/groups`
+**To'rtinchi merge qilinadi — Fuzayil bilan parallel.**
+
+---
+
+## Batafsil Vazifa Tavsifi
+
+### Loyiha nima va siz unda qanday rol o'ynaysiz?
+
+EduTest platformasida o'qituvchi o'quvchilarini guruhlar orqali boshqaradi. Guruh — bu "React kursi" yoki "JS asoslari" kabi sinfdir. O'quvchilar guruhga **invite code** orqali qo'shiladi. Har guruh uchun darslar, testlar, natijalar bo'ladi.
+
+Siz bu loyihadagi **guruh boshqaruvi** ni qurasiz. Guruh yaratish, ko'rish, sozlash, o'chirish — barchasi sizda. Platforma ishlashi uchun avvalo guruh bo'lishi kerak — undan keyin darslar, testlar va o'quvchilar keladi.
+
+### Haqiqiy stsenariy
+
+Sardor o'qituvchi dashboarddan "Yangi guruh" tugmasini bosdi. **Sizning** `/teacher/groups/new` sahifasi ochildi. U "React kursi" nomini kiritdi, "Dasturlash" fanini tanladi. "Yaratish" bosildi — va u `/teacher/groups/abc123` ga yo'naltirildi. Bu yerda **sizning** `GroupDetailPage` i bor: katta `ABC123` invite kodi, "Nusxalash" tugmasi. U kodni o'quvchilarga telegram orqali yuboradi. O'quvchilar (Jahongir sahifasi) `/student/join` da shu kodni kiritadi va guruhga qo'shiladi.
+
+### Siz kimni kutasiz?
+
+- **Fuzayil** — `ROUTES` konstantasi (navigatsiya uchun), `groupStore` dan `setActiveGroup` (aktiv guruhni saqlash). Tayyor bo'lguncha `useNavigate()` bilan hardcode route ishlatishingiz mumkin.
+- **Azizbek** — `AppCard`, `AppModal` (o'chirish tasdiqlash uchun), `AppBadge`, `InviteCodeDisplay` — tayyor bo'lguncha oddiy `<div>` bilan yozing.
+
+### Kimlar sizni kutadi?
+
+- **Odiljon** — `groupId` bilan `/teacher/groups/:groupId/members` sahifasiga tab navigatsiya
+- **Marufjon** — `groupId` bilan `/teacher/groups/:groupId/lessons` sahifasiga tab navigatsiya
+- **Jahongir** — o'quvchi kiritgan invite kodi sizning guruhingizga mos keladi (mock tekshiruv)
+- **Shaxruz** — dashboarddagi guruh kartasi sizning `groupId` ga yo'naltiradi
+
+### Haftalik ish rejasi
+
+**1-kun:**
+- `src/mocks/groupsMock.js` yarating
+- `useGroupList.js` hook — mock guruhlar
+
+**2-kun:**
+- `GroupCard.jsx` — guruh kartasi
+- `GroupsPage.jsx` — ro'yxat + "Yangi guruh" tugmasi
+
+**3-kun:**
+- `GroupForm.jsx` — validatsiya bilan
+- `useGroupCreate.js` + `GroupNewPage.jsx`
+- Brauzerda test: guruh yaratib, redirect ishlayaptimi?
+
+**4-kun:**
+- `InviteCodeDisplay.jsx` — `navigator.clipboard.writeText()` bilan
+- `GroupStatsBar.jsx`
+- `useGroupDetail.js` → `GroupDetailPage.jsx`
+
+**5-kun:**
+- `GroupSettingsPage.jsx` — tahrirlash + o'chirish modal
+- PR oching
+
+### Muhim nuqtalar
+
+Invite kodi generatsiya: `Math.random().toString(36).substring(2, 8).toUpperCase()` — 6 belgili kod. Guruh yaratilganda avtomatik generatsiya qilinadi.
+
+`InviteCodeDisplay` da "Nusxalash" bosilganda: `navigator.clipboard.writeText(inviteCode)` → toast: "Kod nusxalandi!"
+
+Guruh o'chirishda modal matni aniq bo'lsin: **"React kursi guruhini o'chirmoqchimisiz? Bu amal qaytarib bo'lmaydi."**
+
+`GroupDetailPage` dagi 3 ta tab navigatsiya: tab bosilganda `useNavigate` bilan URL o'zgartiring (Odiljon, Marufjon sahifalariga yo'naltiradi).
 
 ---
 
