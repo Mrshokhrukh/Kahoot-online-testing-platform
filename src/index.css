@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #060606;
+  --color-fg: #f0ece5;
+  --color-ac: #c6ff4f;
+  --color-mu: rgba(240, 236, 229, 0.4);
+  --color-br: rgba(240, 236, 229, 0.07);
+
+  --font-display: 'Unbounded', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+
+  --animate-marquee:    marquee 24s linear infinite;
+  --animate-blink:      blink 3s infinite;
+  --animate-grow:       grow 2s ease infinite;
+  --animate-float:      float 7s ease-in-out infinite;
+  --animate-float-rev:  float 10s ease-in-out infinite reverse;
+  --animate-slide-up:   slideUp 0.8s cubic-bezier(0.16,1,0.3,1) both;
+  --animate-slide-up-1: slideUp 0.8s 0.1s cubic-bezier(0.16,1,0.3,1) both;
+  --animate-slide-up-2: slideUp 0.8s 0.2s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { overflow-x: hidden; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%       { transform: translateY(-28px) rotate(3deg); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+@keyframes grow {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+  50%       { opacity: 1;   transform: scaleY(1); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1),
+              transform 0.7s cubic-bezier(0.16,1,0.3,1);
+}
+[data-reveal].revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@layer utilities {
+  .text-stroke-outline {
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(240, 236, 229, 0.22);
+  }
+}
