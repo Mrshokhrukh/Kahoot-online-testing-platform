@@ -3,9 +3,9 @@ function App(){
 
   return (
     <div>
-      
-    </div>
+        <h1>salom</h1>
+    </div>  
   )
 }
 
-export default App
+export default App;
