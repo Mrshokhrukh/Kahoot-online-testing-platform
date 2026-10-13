@@ -1,4 +1,4 @@
-import { BookOpen, ChartNoAxesColumn, CircleHelp, GraduationCap, Home, LogOut, Settings, Users } from 'lucide-react'
+import { BookOpen, ChartNoAxesColumn, CircleHelp, GraduationCap, Home, LayoutDashboard, LogOut, Settings, Users } from 'lucide-react'
 
 const ICONS = { dashboard: Home, groups: Users, tests: BookOpen, results: ChartNoAxesColumn, students: GraduationCap, settings: Settings, help: CircleHelp }
 
