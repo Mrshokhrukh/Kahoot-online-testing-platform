@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { CalendarClock, Clock } from 'lucide-react'
 import AppButton from '../shared/AppButton'
 import AppCard from '../shared/AppCard'
-import { ROUTES } from '../../constants/routeConstants'
+import { ROUTES } from '../../constants/routes'
 
 const ACTIVE_WINDOW_MINUTES = 15
 const MS_PER_MINUTE = 60000
