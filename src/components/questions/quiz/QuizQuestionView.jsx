@@ -51,7 +51,7 @@ function QuizQuestionView({
             key={OPTION_LABELS[optionIndex]}
             type="button"
             aria-pressed={selectedOptionIndex === optionIndex}
-            className={`flex min-h-20 items-center gap-4 rounded-lg border-2 p-4 text-left text-base font-semibold transition-colors ${getOptionClassName(optionIndex)}`}
+            className={`flex min-h-20 items-center gap-4 rounded-lg border-2 p-4 text-left text-base font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 ${getOptionClassName(optionIndex)}`}
             disabled={isAnswerSubmitted}
             onClick={() => onSelectOption?.(optionIndex)}
           >
