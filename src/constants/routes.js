@@ -6,6 +6,7 @@ export const ROUTES = {
 
   // Teacher
   TEACHER_DASHBOARD: '/teacher/dashboard',
+  TEACHER_PROFILE: '/teacher/profile',
   TEACHER_GROUPS: '/teacher/groups',
   TEACHER_GROUP_NEW: '/teacher/groups/new',
   TEACHER_GROUP: '/teacher/groups/:groupId',
@@ -28,6 +29,7 @@ export const ROUTES = {
   STUDENT_GROUPS: '/student/groups',
   STUDENT_JOIN: '/student/join',
   STUDENT_RESULTS: '/student/results',
+  STUDENT_RESULT: '/student/results/:testId',
 
   // Test Session (teacher + student)
   TEST_WAITING: '/test/:testId/waiting',
