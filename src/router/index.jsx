@@ -24,6 +24,10 @@ import AiGeneratePage from '../pages/teacher/ai-generation/AiGeneratePage'
 import TestPreviewPage from '../pages/teacher/ai-generation/TestPreviewPage'
 import TestEditPage from '../pages/teacher/ai-generation/TestEditPage'
 import TestsPage from '../pages/teacher/tests/TestsPage'
+import GroupsPage from '../pages/teacher/groups/GroupsPage'
+import GroupNewPage from '../pages/teacher/groups/GroupNewPage'
+import GroupDetailPage from '../pages/teacher/groups/GroupDetailPage'
+import GroupSettingsPage from '../pages/teacher/groups/GroupSettingsPage'
 import MonitoringPage from '../pages/teacher/monitoring/MonitoringPage'
 
 function RootRedirect() {
@@ -54,9 +58,6 @@ function TestSessionRoutes() {
 }
 
 const teacherPlaceholderRoutes = [
-  [ROUTES.TEACHER_GROUPS, 'Guruhlar'],
-  [ROUTES.TEACHER_GROUP_NEW, 'Yangi guruh'],
-  [ROUTES.TEACHER_GROUP, 'Guruh'],
   [ROUTES.TEACHER_TEST_CONFIG, 'Test sozlamalari'],
   [ROUTES.TEACHER_RESULTS, 'Test natijalari'],
   [ROUTES.TEACHER_ANALYTICS, 'Guruh tahlili'],
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
       { path: ROUTES.TEACHER_TEST_PREVIEW, element: <TestPreviewPage /> },
       { path: ROUTES.TEACHER_TEST_EDIT, element: <TestEditPage /> },
       { path: ROUTES.TEACHER_TESTS, element: <TestsPage /> },
+      { path: ROUTES.TEACHER_GROUPS, element: <GroupsPage /> },
+      { path: ROUTES.TEACHER_GROUP_NEW, element: <GroupNewPage /> },
+      { path: ROUTES.TEACHER_GROUP, element: <GroupDetailPage /> },
+      { path: `${ROUTES.TEACHER_GROUP}/settings`, element: <GroupSettingsPage /> },
       { path: ROUTES.TEACHER_MONITOR, element: <MonitoringPage /> },
       ...teacherPlaceholderRoutes.map(([path, title]) => ({ path, element: <PlaceholderPage title={title} /> })),
     ],
