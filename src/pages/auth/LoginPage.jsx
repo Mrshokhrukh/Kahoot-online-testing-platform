@@ -18,7 +18,7 @@ function LoginPage() {
           {justRegistered && <p role="status" className="mb-4 rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-700">Hisob yaratildi. Endi tizimga kiring.</p>}
           <LoginForm />
         </AppCard>
-        <p className="mt-4 text-center text-xs text-gray-500">Sinov uchun: teacher@test.com yoki student@test.com, parol: password123</p>
+        <p className="mt-4 text-center text-xs text-gray-500">O'qituvchi va o'quvchi uchun alohida sinov hisoblari mavjud.</p>
       </div>
     </main>
   )

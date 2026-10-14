@@ -9,8 +9,8 @@ export const mockStudentUser = {
 
 // Faqat mock login uchun (haqiqiy backend ulanguncha)
 export const mockPasswords = {
-  'teacher@test.com': 'password123',
-  'student@test.com': 'password123',
+  'teacher@test.com': 'Ustoz2026!',
+  'student@test.com': 'Oquvchi2026!',
 }
 
 // Ro'yxatdan o'tgan foydalanuvchilar mock tarzda localStorage da saqlanadi
