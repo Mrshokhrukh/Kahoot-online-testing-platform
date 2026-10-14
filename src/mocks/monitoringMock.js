@@ -1,0 +1,37 @@
+export const mockMonitoringData = {
+  testName: '5-dars testi',
+  groupName: 'React kursi',
+  remainingSeconds: 1547,
+  totalStudents: 22,
+  stats: {
+    connected: 18,
+    inProgress: 12,
+    completed: 6,
+    disconnected: 4,
+  },
+}
+
+export const mockStudentStatusList = [
+  { id: 's1', name: 'Ali Karimov', status: 'completed', currentQuestion: 20, totalQuestions: 20, correctRate: 85 },
+  { id: 's2', name: 'Vali Toshmatov', status: 'completed', currentQuestion: 20, totalQuestions: 20, correctRate: 90 },
+  { id: 's3', name: "Sardor Yo\u2019ldoshev", status: 'completed', currentQuestion: 20, totalQuestions: 20, correctRate: 75 },
+  { id: 's4', name: 'Malika Boboyeva', status: 'completed', currentQuestion: 20, totalQuestions: 20, correctRate: 95 },
+  { id: 's5', name: 'Azizbek Karimov', status: 'completed', currentQuestion: 20, totalQuestions: 20, correctRate: 80 },
+  { id: 's6', name: 'Dilshod To\u2019liyev', status: 'completed', currentQuestion: 20, totalQuestions: 20, correctRate: 85 },
+  { id: 's7', name: 'Madina Ergasheva', status: 'in_progress', currentQuestion: 12, totalQuestions: 20, correctRate: 83 },
+  { id: 's8', name: 'Jasur Rahimov', status: 'in_progress', currentQuestion: 10, totalQuestions: 20, correctRate: 70 },
+  { id: 's9', name: 'Shahnoza Ismoilova', status: 'in_progress', currentQuestion: 15, totalQuestions: 20, correctRate: 87 },
+  { id: 's10', name: 'Bekzod Qodirov', status: 'in_progress', currentQuestion: 8, totalQuestions: 20, correctRate: 75 },
+  { id: 's11', name: 'Zarina Abdullayeva', status: 'in_progress', currentQuestion: 13, totalQuestions: 20, correctRate: 92 },
+  { id: 's12', name: 'Otabek Xasanov', status: 'in_progress', currentQuestion: 6, totalQuestions: 20, correctRate: 67 },
+  { id: 's13', name: 'Nodira Yusupova', status: 'in_progress', currentQuestion: 17, totalQuestions: 20, correctRate: 88 },
+  { id: 's14', name: 'Farrux Aliyev', status: 'in_progress', currentQuestion: 11, totalQuestions: 20, correctRate: 73 },
+  { id: 's15', name: 'Gulnoza Mamatova', status: 'in_progress', currentQuestion: 9, totalQuestions: 20, correctRate: 89 },
+  { id: 's16', name: 'Umidjon Sobirov', status: 'in_progress', currentQuestion: 14, totalQuestions: 20, correctRate: 79 },
+  { id: 's17', name: 'Sevara Tursunova', status: 'in_progress', currentQuestion: 7, totalQuestions: 20, correctRate: 86 },
+  { id: 's18', name: 'Diyorbek Iskandarov', status: 'in_progress', currentQuestion: 16, totalQuestions: 20, correctRate: 81 },
+  { id: 's19', name: 'Kamola Raximova', status: 'disconnected', currentQuestion: 0, totalQuestions: 20, correctRate: null },
+  { id: 's20', name: 'Shoxrux Abdullayev', status: 'disconnected', currentQuestion: 0, totalQuestions: 20, correctRate: null },
+  { id: 's21', name: 'Munisa Karimova', status: 'disconnected', currentQuestion: 0, totalQuestions: 20, correctRate: null },
+  { id: 's22', name: 'Temur Bekmurodov', status: 'disconnected', currentQuestion: 0, totalQuestions: 20, correctRate: null },
+]
