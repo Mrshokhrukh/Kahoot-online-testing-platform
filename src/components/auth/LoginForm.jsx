@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useLoginForm } from '../../hooks/auth/useLoginForm'
+import RoleSelector from './RoleSelector'
 
 // TODO: Azizbek komponentlari (AppInput, AppButton, AppErrorMessage) tayyor bo'lgach almashtiriladi
 
@@ -9,6 +10,8 @@ export default function LoginForm() {
     setEmailValue,
     passwordValue,
     setPasswordValue,
+    roleValue,
+    setRoleValue,
     formError,
     isSubmitting,
     handleLoginSubmit,
@@ -16,6 +19,7 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleLoginSubmit} noValidate className="space-y-4">
+      <RoleSelector value={roleValue} onChange={setRoleValue} disabled={isSubmitting} />
       <div>
         <label htmlFor="login-email" className="mb-1 block text-sm font-medium text-gray-700">
           Email

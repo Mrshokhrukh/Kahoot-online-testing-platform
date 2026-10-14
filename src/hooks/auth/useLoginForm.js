@@ -12,10 +12,14 @@ export function useLoginForm() {
 
   const [emailValue, setEmailValue] = useState('')
   const [passwordValue, setPasswordValue] = useState('')
+  const [roleValue, setRoleValue] = useState('')
   const [formError, setFormError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const validateLoginForm = () => {
+    if (roleValue !== 'teacher' && roleValue !== 'student') {
+      return "O'qituvchi yoki o'quvchi sifatida kirishni tanlang"
+    }
     if (!EMAIL_REGEX.test(emailValue.trim())) {
       return "Email manzil noto'g'ri formatda"
     }
@@ -46,13 +50,18 @@ export function useLoginForm() {
         setIsSubmitting(false)
         return
       }
+      if (user.role !== roleValue) {
+        setFormError("Tanlangan rol email manziliga mos kelmaydi")
+        setIsSubmitting(false)
+        return
+      }
 
       const token = 'mock-token'
       setAuthToken(token)
       setCurrentUser(user)
 
       setIsSubmitting(false)
-      navigate(user.role === 'teacher' ? '/teacher/dashboard' : '/student/dashboard')
+      navigate(roleValue === 'teacher' ? '/teacher/dashboard' : '/student/dashboard')
     }, 800)
   }
 
@@ -61,6 +70,8 @@ export function useLoginForm() {
     setEmailValue,
     passwordValue,
     setPasswordValue,
+    roleValue,
+    setRoleValue,
     formError,
     isSubmitting,
     validateLoginForm,
