@@ -18,7 +18,6 @@ function GeneratingAnimation() {
           <span
             key={dotIndex}
             className="h-3 w-3 rounded-full bg-blue-600 animate-pulse"
-            style={{ animationDelay: `${dotIndex * 180}ms` }}
           />
         ))}
       </div>

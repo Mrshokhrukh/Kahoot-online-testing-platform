@@ -15,6 +15,7 @@ const DIFFICULTY_OPTIONS = [
 
 function GenerationSettings({
   generationSettings,
+  availableQuestionCount,
   onQuestionCountChange,
   onTypeToggle,
   onDifficultyChange,
@@ -26,20 +27,20 @@ function GenerationSettings({
       <div className="flex items-center justify-between gap-3">
         <h2 className="text-xl font-bold text-gray-900">Sozlamalar</h2>
         <span className="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700">
-          AI tayyorlanmoqda
+          Demo: {availableQuestionCount} ta namuna
         </span>
       </div>
 
       <div className="mt-6 space-y-6">
         <div>
           <div className="mb-2 flex items-center justify-between text-sm font-medium text-gray-700">
-            <span>Savollar soni</span>
+            <span>Namunaviy savollar soni</span>
             <span className="font-semibold text-gray-900">{generationSettings?.questionCount || 20}</span>
           </div>
           <input
             type="range"
-            min="5"
-            max="30"
+            min="1"
+            max={Math.max(1, availableQuestionCount)}
             step="1"
             value={generationSettings?.questionCount || 20}
             onChange={(event) => onQuestionCountChange(event.target.value)}
@@ -47,9 +48,12 @@ function GenerationSettings({
             aria-label="Savollar soni"
           />
           <div className="mt-2 flex justify-between text-[10px] text-gray-400">
-            <span>5</span>
-            <span>30</span>
+            <span>1</span>
+            <span>{availableQuestionCount}</span>
           </div>
+          <p className="mt-2 text-xs text-gray-500">
+            Hozircha faqat mavjud statik namunalar ishlatiladi; haqiqiy AI generatsiyasi ulanmagan.
+          </p>
         </div>
 
         <div>
@@ -70,6 +74,7 @@ function GenerationSettings({
                   <input
                     type="checkbox"
                     checked={isChecked}
+                    disabled={isChecked && selectedTypes.length === 1}
                     onChange={() => onTypeToggle(type)}
                     className="h-4 w-4 accent-blue-600"
                   />
@@ -79,6 +84,7 @@ function GenerationSettings({
             })}
           </div>
         </div>
+        <p className="text-xs text-gray-500">Kamida bitta savol turini tanlangan holda qoldiring.</p>
 
         <div>
           <label htmlFor="difficulty" className="mb-2 block text-sm font-medium text-gray-700">

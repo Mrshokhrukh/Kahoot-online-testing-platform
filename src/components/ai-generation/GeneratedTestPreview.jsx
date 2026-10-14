@@ -2,6 +2,12 @@ import { CheckCircle2, Code2, FileText, PencilLine, Sparkles } from 'lucide-reac
 import AppCard from '../shared/AppCard'
 import EmptyState from '../shared/EmptyState'
 
+const DIFFICULTY_LABELS = {
+  easy: 'Oson',
+  medium: 'O‘rta',
+  hard: 'Qiyin',
+}
+
 const TYPE_LABELS = {
   quiz: { label: 'Quiz', icon: Sparkles },
   true_false: { label: 'T/F', icon: CheckCircle2 },
@@ -21,7 +27,15 @@ function TypeBadge({ type }) {
   )
 }
 
-function GeneratedTestPreview({ lessonId = 'l2', questionList = [], onEdit, onContinue }) {
+function GeneratedTestPreview({
+  lessonId = 'l2',
+  questionList = [],
+  difficulty,
+  requestedQuestionCount,
+  generationMode,
+  onEdit,
+  onContinue,
+}) {
   if (!questionList.length) {
     return <EmptyState text="Savollar yaratilmagan. AI generatsiyasi tugagandan keyin ko‘rish mumkin." />
   }
@@ -33,7 +47,12 @@ function GeneratedTestPreview({ lessonId = 'l2', questionList = [], onEdit, onCo
           <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue-600">Test preview</p>
           <h2 className="mt-1 text-2xl font-bold text-gray-900">Yaratilgan test</h2>
         </div>
-        <div className="text-sm text-gray-500">Lesson: {lessonId}</div>
+        <div className="text-sm text-gray-500">
+          <p>Lesson: {lessonId}</p>
+          <p>{questionList.length} ta savol / {requestedQuestionCount ?? questionList.length} ta so‘ralgan</p>
+          {difficulty && <p>Tanlangan qiyinlik: {DIFFICULTY_LABELS[difficulty] || difficulty}</p>}
+          {generationMode === 'mock' && <p className="font-medium text-amber-700">Statik demo namunasi — AI emas</p>}
+        </div>
       </div>
 
       <div className="mt-5 space-y-4">
@@ -91,7 +110,7 @@ function GeneratedTestPreview({ lessonId = 'l2', questionList = [], onEdit, onCo
         <button
           type="button"
           onClick={onContinue}
-          className="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+          className="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
           Qabul qilish va davom etish
         </button>

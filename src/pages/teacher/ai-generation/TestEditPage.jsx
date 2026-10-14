@@ -4,9 +4,11 @@ import { Plus, Trash2 } from 'lucide-react'
 import AppButton from '../../../components/shared/AppButton'
 import AppCard from '../../../components/shared/AppCard'
 import AppLayout from '../../../components/shared/AppLayout'
+import AppModal from '../../../components/shared/AppModal'
 import QuestionEditorWrapper from '../../../components/ai-generation/QuestionEditorWrapper'
 import ROUTES from '../../../constants/routes'
 import useTestEditor from '../../../hooks/ai-generation/useTestEditor'
+import { persistGeneratedTest, readGeneratedTest } from '../../../hooks/ai-generation/useAiGenerate'
 
 const TYPE_OPTIONS = [
   { value: 'quiz', label: 'Quiz' },
@@ -17,29 +19,51 @@ const TYPE_OPTIONS = [
 
 function TestEditPage() {
   const { lessonId } = useParams()
+  return <TestEditContent key={lessonId} lessonId={lessonId} />
+}
+
+function TestEditContent({ lessonId }) {
   const location = useLocation()
   const navigate = useNavigate()
-  const generatedTest = location.state?.generatedTest
+  const [storedDraft] = useState(() => readGeneratedTest(lessonId))
+  const routeDraft = location.state?.generatedTest?.lessonId === lessonId
+    ? location.state.generatedTest
+    : null
+  const generatedTest = routeDraft || storedDraft.generatedTest
   const hasGeneratedTest = Array.isArray(generatedTest?.questionList)
-  const { questionList, handleAddQuestion, handleRemoveQuestion, handleQuestionChange } = useTestEditor(
-    hasGeneratedTest ? generatedTest.questionList : [],
-  )
+  const {
+    questionList,
+    handleAddQuestion,
+    handleRemoveQuestion,
+    handleQuestionChange,
+    validateQuestionList,
+  } = useTestEditor(hasGeneratedTest ? generatedTest.questionList : [])
 
   const [selectedType, setSelectedType] = useState('quiz')
+  const [validationErrors, setValidationErrors] = useState([])
+  const [storageError, setStorageError] = useState(storedDraft.error)
+  const [questionToRemove, setQuestionToRemove] = useState(null)
 
   const handleSave = () => {
+    const nextValidationErrors = validateQuestionList()
+    setValidationErrors(nextValidationErrors)
+    if (nextValidationErrors.length > 0 || !hasGeneratedTest) {
+      return
+    }
+
+    const updatedTest = { ...generatedTest, lessonId, questionList }
+    const nextStorageError = persistGeneratedTest(lessonId, updatedTest)
+    setStorageError(nextStorageError)
+    if (nextStorageError) {
+      return
+    }
+
     const previewPath = ROUTES.TEACHER_TEST_PREVIEW.replace(
       ':lessonId',
       encodeURIComponent(lessonId),
     )
     navigate(previewPath, {
-      state: {
-        generatedTest: {
-          ...generatedTest,
-          lessonId,
-          questionList,
-        },
-      },
+      state: { generatedTest: updatedTest },
     })
   }
 
@@ -49,6 +73,14 @@ function TestEditPage() {
       encodeURIComponent(lessonId),
     )
     navigate(generatePath)
+  }
+
+  const handleQuestionRemove = () => {
+    if (!questionToRemove) {
+      return
+    }
+    handleRemoveQuestion(questionToRemove.id)
+    setQuestionToRemove(null)
   }
 
   return (
@@ -83,11 +115,17 @@ function TestEditPage() {
           )}
         </div>
 
+        {storageError && (
+          <div role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            {storageError} O‘zgarishlarni sahifalar orasida saqlab bo‘lmasligi mumkin.
+          </div>
+        )}
+
         {!hasGeneratedTest ? (
           <div className="rounded-xl border border-yellow-200 bg-yellow-50 p-5">
             <p className="text-sm text-yellow-800">
-              Tahrirlash uchun test ma’lumoti topilmadi. Avval test yarating va previewdan
-              tahrirlash sahifasiga o‘ting.
+              {storedDraft.error || 'Tahrirlash uchun test ma’lumoti topilmadi.'}
+              {' '}Avval test yarating va previewdan tahrirlash sahifasiga o‘ting.
             </p>
             <AppButton
               label="Test yaratishga qaytish"
@@ -97,6 +135,14 @@ function TestEditPage() {
           </div>
         ) : (
           <>
+            {validationErrors.length > 0 && (
+              <div role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                <p className="font-semibold">Testni saqlashdan oldin quyidagilarni tuzating:</p>
+                <ul className="mt-2 list-inside list-disc">
+                  {validationErrors.map((error) => <li key={error}>{error}</li>)}
+                </ul>
+              </div>
+            )}
             <div className="space-y-4">
               {questionList.length === 0 ? (
                 <AppCard className="p-6 text-center text-gray-500">
@@ -108,7 +154,7 @@ function TestEditPage() {
                     <div className="flex justify-end">
                       <button
                         type="button"
-                        onClick={() => handleRemoveQuestion(question.id)}
+                        onClick={() => setQuestionToRemove(question)}
                         className="inline-flex items-center gap-2 rounded-md border border-red-200 bg-red-50 px-2.5 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-100"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -139,6 +185,23 @@ function TestEditPage() {
           </>
         )}
       </div>
+      <AppModal
+        isOpen={Boolean(questionToRemove)}
+        onClose={() => setQuestionToRemove(null)}
+        title="Savolni o‘chirish?"
+      >
+        <p className="text-sm text-gray-600">
+          “{questionToRemove?.questionText || 'Yangi savol'}” testdan o‘chiriladi.
+        </p>
+        <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+          <AppButton
+            label="Bekor qilish"
+            variant="secondary"
+            onClick={() => setQuestionToRemove(null)}
+          />
+          <AppButton label="O‘chirish" variant="danger" onClick={handleQuestionRemove} />
+        </div>
+      </AppModal>
     </AppLayout>
   )
 }

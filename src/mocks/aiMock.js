@@ -1,4 +1,5 @@
 export const mockGeneratedTest = {
+  generationMode: 'mock',
   lessonId: 'l2',
   questionList: [
     {
