@@ -29,19 +29,23 @@ function StudentStatsBar({ studentStats }) {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      {buildStatItemList(studentStats).map(({ id, label, value, Icon }) => (
-        <AppCard key={id}>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-blue-50">
-              <Icon className="w-6 h-6 text-blue-600" aria-hidden="true" />
+      {buildStatItemList(studentStats).map((item) => {
+        const Icon = item.Icon
+
+        return (
+          <AppCard key={item.id}>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-blue-50">
+                <Icon className="w-6 h-6 text-blue-600" aria-hidden="true" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">{item.label}</p>
+                <p className="text-4xl font-bold text-gray-900">{item.value}</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm text-gray-600">{label}</p>
-              <p className="text-4xl font-bold text-gray-900">{value}</p>
-            </div>
-          </div>
-        </AppCard>
-      ))}
+          </AppCard>
+        )
+      })}
     </div>
   )
 }

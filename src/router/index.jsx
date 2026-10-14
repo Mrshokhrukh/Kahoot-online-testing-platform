@@ -1,19 +1,47 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createBrowserRouter, Link, Navigate, Outlet, useNavigate } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
+import { createBrowserRouter, Link, Navigate, Outlet } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { ROUTES } from '../constants/routes'
 import { USER_ROLES } from '../constants/testConstants'
-import { AppButton, AppLayout } from '../components/shared'
+import { AppLayout } from '../components/shared'
 import ProtectedRoute from './ProtectedRoute'
+import LoginPage from '../pages/auth/LoginPage'
+import RegisterPage from '../pages/auth/RegisterPage'
+import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage'
 import StudentDashboardPage from '../pages/student/StudentDashboardPage'
 import StudentGroupsPage from '../pages/student/StudentGroupsPage'
 import StudentJoinPage from '../pages/student/StudentJoinPage'
 import StudentResultsPage from '../pages/student/StudentResultsPage'
 import StudentResultDetailPage from '../pages/student/StudentResultDetailPage'
+import TestWaitingPage from '../pages/test-session/TestWaitingPage'
+import TestCompletePage from '../pages/test-session/TestCompletePage'
 import TeacherDashboardPage from '../pages/teacher/dashboard/TeacherDashboardPage'
 import TeacherProfilePage from '../pages/teacher/dashboard/TeacherProfilePage'
 import MembersPage from '../pages/teacher/members/MembersPage'
 import StudentProfilePage from '../pages/teacher/members/StudentProfilePage'
+import LessonsPage from '../pages/teacher/lessons/LessonsPage'
+import LessonNewPage from '../pages/teacher/lessons/LessonNewPage'
+import LessonDetailPage from '../pages/teacher/lessons/LessonDetailPage'
+import AiGeneratePage from '../pages/teacher/ai-generation/AiGeneratePage'
+import TestsPage from '../pages/teacher/tests/TestsPage'
+import GroupsPage from '../pages/teacher/groups/GroupsPage'
+import GroupNewPage from '../pages/teacher/groups/GroupNewPage'
+import GroupDetailPage from '../pages/teacher/groups/GroupDetailPage'
+import GroupSettingsPage from '../pages/teacher/groups/GroupSettingsPage'
+import MonitoringPage from '../pages/teacher/monitoring/MonitoringPage'
+import TestResultsPage from '../pages/teacher/results/TestResultsPage'
+import GroupResultsPage from '../pages/teacher/results/GroupResultsPage'
+const TestEditPage = lazy(() => import('../pages/teacher/ai-generation/TestEditPage'))
+const TestPreviewPage = lazy(() => import('../pages/teacher/ai-generation/TestPreviewPage'))
+const TestConfigPage = lazy(() => import('../pages/teacher/tests/TestConfigPage'))
+const GroupAnalyticsPage = lazy(() => import('../pages/teacher/analytics/GroupAnalyticsPage'))
+const StudentAnalyticsPage = lazy(() => import('../pages/teacher/analytics/StudentAnalyticsPage'))
+const TestActivePage = lazy(() => import('../pages/test-session/TestActivePage'))
+
+function LazyPage({ children }) {
+  return <Suspense fallback={<div className="flex min-h-64 items-center justify-center text-sm font-medium text-gray-500">Sahifa yuklanmoqda…</div>}>{children}</Suspense>
+}
 
 function RootRedirect() {
   const currentUser = useAuthStore((state) => state.currentUser)
@@ -21,24 +49,7 @@ function RootRedirect() {
   if (currentUser?.role === USER_ROLES.STUDENT) return <Navigate to={ROUTES.STUDENT_DASHBOARD} replace />
   return <Navigate to={ROUTES.LOGIN} replace />
 }
-
-function LoginPlaceholder() {
-  const setCurrentUser = useAuthStore((state) => state.setCurrentUser)
-  const navigate = useNavigate()
-
-  function handleDemoLogin(role) {
-    const name = role === USER_ROLES.TEACHER ? 'Sardor Usmonov' : 'Shaxruz Ahmedov'
-    setCurrentUser({ id: `demo-${role}`, name, role })
-    navigate(role === USER_ROLES.TEACHER ? ROUTES.TEACHER_DASHBOARD : ROUTES.STUDENT_DASHBOARD, { replace: true })
-  }
-
-  return <AppLayout><section className="mx-auto flex max-w-lg flex-col items-center gap-4 rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm">
-    <h1 className="text-2xl font-bold text-gray-900">EduTest</h1>
-    <p className="text-sm text-gray-600">Kirish sahifasi hali tayyor emas. Hozircha platformani sinash uchun rolni tanlang.</p>
-    <div className="flex flex-wrap justify-center gap-3"><AppButton label="O‘qituvchi sifatida kirish" onClick={() => handleDemoLogin(USER_ROLES.TEACHER)} /><AppButton label="O‘quvchi sifatida kirish" variant="secondary" onClick={() => handleDemoLogin(USER_ROLES.STUDENT)} /></div>
-  </section></AppLayout>
-}
-
+  
 function PlaceholderPage({ title }) {
   return <AppLayout><section className="mx-auto max-w-2xl rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm"><h1 className="text-xl font-bold text-gray-900">{title}</h1><p className="mt-2 text-sm text-gray-600">Bu sahifa hali ishlab chiqilmoqda.</p><Link className="mt-5 inline-block text-sm font-semibold text-blue-600 hover:text-blue-700" to="/">Bosh sahifaga qaytish</Link></section></AppLayout>
 }
@@ -59,29 +70,11 @@ function TestSessionRoutes() {
   return <Outlet />
 }
 
-const teacherPlaceholderRoutes = [
-  [ROUTES.TEACHER_GROUPS, 'Guruhlar'],
-  [ROUTES.TEACHER_GROUP_NEW, 'Yangi guruh'],
-  [ROUTES.TEACHER_GROUP, 'Guruh'],
-  [ROUTES.TEACHER_LESSONS, 'Darslar'],
-  [ROUTES.TEACHER_LESSON_NEW, 'Yangi dars'],
-  [ROUTES.TEACHER_LESSON, 'Dars'],
-  [ROUTES.TEACHER_AI_GENERATE, 'AI test yaratish'],
-  [ROUTES.TEACHER_TEST_PREVIEW, 'Test ko‘rinishi'],
-  [ROUTES.TEACHER_TEST_EDIT, 'Testni tahrirlash'],
-  [ROUTES.TEACHER_TESTS, 'Testlar'],
-  [ROUTES.TEACHER_TEST_CONFIG, 'Test sozlamalari'],
-  [ROUTES.TEACHER_MONITOR, 'Test nazorati'],
-  [ROUTES.TEACHER_RESULTS, 'Test natijalari'],
-  [ROUTES.TEACHER_ANALYTICS, 'Guruh tahlili'],
-  [ROUTES.STUDENT_ANALYTICS, 'O‘quvchi tahlili'],
-]
-
 const router = createBrowserRouter([
   { path: '/', element: <RootRedirect /> },
-  { path: ROUTES.LOGIN, element: <LoginPlaceholder /> },
-  { path: ROUTES.REGISTER, element: <PlaceholderPage title="Ro‘yxatdan o‘tish" /> },
-  { path: ROUTES.FORGOT_PASSWORD, element: <PlaceholderPage title="Parolni tiklash" /> },
+  { path: ROUTES.LOGIN, element: <LoginPage /> },
+  { path: ROUTES.REGISTER, element: <RegisterPage /> },
+  { path: ROUTES.FORGOT_PASSWORD, element: <ForgotPasswordPage /> },
   {
     element: <TeacherRoutes />,
     children: [
@@ -89,7 +82,23 @@ const router = createBrowserRouter([
       { path: ROUTES.TEACHER_PROFILE, element: <TeacherProfilePage /> },
       { path: ROUTES.TEACHER_MEMBERS, element: <MembersPage /> },
       { path: `${ROUTES.TEACHER_MEMBERS}/:studentId`, element: <StudentProfilePage /> },
-      ...teacherPlaceholderRoutes.map(([path, title]) => ({ path, element: <PlaceholderPage title={title} /> })),
+      { path: ROUTES.TEACHER_LESSONS, element: <LessonsPage /> },
+      { path: ROUTES.TEACHER_LESSON_NEW, element: <LessonNewPage /> },
+      { path: ROUTES.TEACHER_LESSON, element: <LessonDetailPage /> },
+      { path: ROUTES.TEACHER_AI_GENERATE, element: <AiGeneratePage /> },
+      { path: ROUTES.TEACHER_TEST_PREVIEW, element: <LazyPage><TestPreviewPage /></LazyPage> },
+      { path: ROUTES.TEACHER_TEST_EDIT, element: <LazyPage><TestEditPage /></LazyPage> },
+      { path: ROUTES.TEACHER_TESTS, element: <TestsPage /> },
+      { path: ROUTES.TEACHER_TEST_CONFIG, element: <LazyPage><TestConfigPage /></LazyPage> },
+      { path: ROUTES.TEACHER_GROUPS, element: <GroupsPage /> },
+      { path: ROUTES.TEACHER_GROUP_NEW, element: <GroupNewPage /> },
+      { path: ROUTES.TEACHER_GROUP, element: <GroupDetailPage /> },
+      { path: `${ROUTES.TEACHER_GROUP}/settings`, element: <GroupSettingsPage /> },
+      { path: ROUTES.TEACHER_MONITOR, element: <MonitoringPage /> },
+      { path: ROUTES.TEACHER_RESULTS, element: <TestResultsPage /> },
+      { path: ROUTES.TEACHER_GROUP_RESULTS, element: <GroupResultsPage /> },
+      { path: ROUTES.TEACHER_ANALYTICS, element: <LazyPage><GroupAnalyticsPage /></LazyPage> },
+      { path: ROUTES.STUDENT_ANALYTICS, element: <LazyPage><StudentAnalyticsPage /></LazyPage> },
     ],
   },
   {
@@ -105,9 +114,9 @@ const router = createBrowserRouter([
   {
     element: <TestSessionRoutes />,
     children: [
-      { path: ROUTES.TEST_WAITING, element: <PlaceholderPage title="Test boshlanishini kuting" /> },
-      { path: ROUTES.TEST_ACTIVE, element: <PlaceholderPage title="Test ishlash" /> },
-      { path: ROUTES.TEST_COMPLETE, element: <PlaceholderPage title="Test yakunlandi" /> },
+      { path: ROUTES.TEST_WAITING, element: <TestWaitingPage /> },
+      { path: ROUTES.TEST_ACTIVE, element: <LazyPage><TestActivePage /></LazyPage> },
+      { path: ROUTES.TEST_COMPLETE, element: <TestCompletePage /> },
     ],
   },
   { path: '*', element: <MissingPage /> },

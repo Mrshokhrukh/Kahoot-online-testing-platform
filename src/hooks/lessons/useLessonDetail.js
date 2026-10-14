@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { mockLessonList } from '../../mocks/lessonsMock'
 import { MOCK_API_DELAY } from '../../constants/appConstants'
+import { useLessonStore } from '../../store/lessonStore'
 
 const NOT_FOUND_MESSAGE = 'Dars topilmadi. U o\'chirilgan yoki havola noto\'g\'ri bo\'lishi mumkin.'
 const LOAD_ERROR_MESSAGE =
@@ -14,12 +15,14 @@ function findGroupLesson(groupId, lessonId) {
 
 function useLessonDetail(groupId, lessonId) {
   const [loadResult, setLoadResult] = useState(null)
+  const setActiveLesson = useLessonStore((state) => state.setActiveLesson)
   const requestKey = `${groupId}/${lessonId}`
 
   useEffect(() => {
     const timerId = setTimeout(() => {
       try {
         const lesson = findGroupLesson(groupId, lessonId) ?? null
+        setActiveLesson(lesson)
         const loadError = lesson ? null : NOT_FOUND_MESSAGE
         setLoadResult({ requestKey: `${groupId}/${lessonId}`, lesson, loadError })
       } catch {
@@ -28,7 +31,7 @@ function useLessonDetail(groupId, lessonId) {
     }, MOCK_API_DELAY)
 
     return () => clearTimeout(timerId)
-  }, [groupId, lessonId])
+  }, [groupId, lessonId, setActiveLesson])
 
   const isLoading = !loadResult || loadResult.requestKey !== requestKey
   if (isLoading) return { lesson: null, isLoading, loadError: null }
