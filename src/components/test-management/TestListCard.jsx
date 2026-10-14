@@ -1,15 +1,18 @@
 import { AppCard, AppButton } from '../shared'
 import TestStatusBadge from './TestStatusBadge'
 
+const MONTHS = [
+    'yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun',
+    'iyul', 'avgust', 'sentyabr', 'oktabr', 'noyabr', 'dekabr',
+]
+
 function formatDateTime(iso) {
     const d = new Date(iso)
-    return d.toLocaleString('uz-UZ', {
-        day: 'numeric',
-        month: 'long',
-        hour: '2-digit',
-        minute: '2-digit',
-    })
+    const hh = String(d.getHours()).padStart(2, '0')
+    const mm = String(d.getMinutes()).padStart(2, '0')
+    return `${d.getDate()}-${MONTHS[d.getMonth()]}, ${hh}:${mm}`
 }
+
 
 export default function TestListCard({ test, onConfigure, onMonitor, onResults }) {
     return (
