@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import AppButton from '../../../components/shared/AppButton'
 import AppCard from '../../../components/shared/AppCard'
 import AppErrorMessage from '../../../components/shared/AppErrorMessage'
 import AppLayout from '../../../components/shared/AppLayout'
@@ -110,6 +111,10 @@ function TeacherDashboardPage() {
     navigate(route)
   }
 
+  function handleProfileOpen() {
+    navigate(ROUTES.TEACHER_PROFILE)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 lg:pl-60">
       <AppSidebar
@@ -119,6 +124,7 @@ function TeacherDashboardPage() {
       />
       <AppLayout>
         <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <header>
             <h1 className="text-3xl font-bold text-gray-900">
               Salom, {userName}!
@@ -127,6 +133,13 @@ function TeacherDashboardPage() {
               Guruhlar, testlar va o'quvchilar holati bir joyda
             </p>
           </header>
+          <AppButton
+            label="Profilim"
+            variant="secondary"
+            size="sm"
+            onClick={handleProfileOpen}
+          />
+        </div>
           {isLoading && (
             <div className="flex justify-center py-12">
               <AppSpinner size="lg" />

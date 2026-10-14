@@ -123,7 +123,7 @@ function TeacherProfilePage() {
           { label: 'Guruhlar', route: ROUTES.TEACHER_GROUPS, icon: 'groups' },
           { label: 'Testlar', route: ROUTES.TEACHER_TESTS, icon: 'tests' },
         ]}
-        activeRoute={ROUTES.TEACHER_DASHBOARD}
+        activeRoute={ROUTES.TEACHER_PROFILE}
       />
       <AppLayout>
         <div className="flex flex-col gap-6">
