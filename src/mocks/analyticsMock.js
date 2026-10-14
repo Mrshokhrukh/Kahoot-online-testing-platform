@@ -16,3 +16,22 @@ export const mockStudentProgressData = [
   { date: '2026-10-03', testName: '2-dars', score: 70 },
   { date: '2026-10-07', testName: '3-dars', score: 85 },
 ]
+
+export const mockAttendanceData = [
+  { name: 'Qatnashdi', value: 18 },
+  { name: 'Qatnashmadi', value: 4 },
+]
+
+export const mockTopPerformers = [
+  { name: 'Madina Rahimova', avgScore: 94, tests: 8, trend: '+8%' },
+  { name: 'Ali Karimov', avgScore: 82, tests: 8, trend: '+5%' },
+  { name: 'Nilufar Sodiqova', avgScore: 77, tests: 7, trend: '+3%' },
+  { name: 'Vali Toshmatov', avgScore: 65, tests: 6, trend: '−2%' },
+]
+
+export const mockSubjectStrength = [
+  { subject: 'Hooks', score: 88 },
+  { subject: 'Komponentlar', score: 76 },
+  { subject: 'Routing', score: 68 },
+  { subject: 'State', score: 82 },
+]

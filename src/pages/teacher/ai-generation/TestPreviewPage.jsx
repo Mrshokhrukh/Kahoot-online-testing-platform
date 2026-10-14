@@ -3,12 +3,16 @@ import GeneratedTestPreview from '../../../components/ai-generation/GeneratedTes
 import AppButton from '../../../components/shared/AppButton'
 import AppLayout from '../../../components/shared/AppLayout'
 import ROUTES from '../../../constants/routes'
+import { mockTestList } from '../../../mocks/testsMock'
+import { useTestStore } from '../../../store/testStore'
 
 function TestPreviewPage() {
   const { lessonId } = useParams()
   const location = useLocation()
   const navigate = useNavigate()
   const generatedTest = location.state?.generatedTest
+  const setTestList = useTestStore((state) => state.setTestList)
+  const upsertTest = useTestStore((state) => state.upsertTest)
   const hasGeneratedTest = Array.isArray(generatedTest?.questionList)
 
   const handleReturnToGeneration = () => {
@@ -28,6 +32,12 @@ function TestPreviewPage() {
   }
 
   const handleContinue = () => {
+    if (!generatedTest) return
+    if (useTestStore.getState().testList.length === 0) setTestList(mockTestList)
+    const scheduledDate = new Date()
+    scheduledDate.setDate(scheduledDate.getDate() + 1)
+    const scheduledAt = `${scheduledDate.getFullYear()}-${String(scheduledDate.getMonth() + 1).padStart(2, '0')}-${String(scheduledDate.getDate()).padStart(2, '0')}T18:00:00`
+    upsertTest({ id: 'new-test-id', name: 'Yangi test', groupName: 'React kursi', groupId: 'g1', status: 'scheduled', scheduledAt, studentCount: 0, questionCount: generatedTest.questionList.length, durationMinutes: 30, questionList: generatedTest.questionList })
     navigate(ROUTES.TEACHER_TEST_CONFIG.replace(':testId', 'new-test-id'))
   }
 

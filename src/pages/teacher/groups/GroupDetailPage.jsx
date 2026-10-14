@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom'
-import { BookOpen, FileText, Settings, Users } from 'lucide-react'
+import { BookOpen, FileText, Settings, Users, ChartNoAxesCombined } from 'lucide-react'
 import AppButton from '../../../components/shared/AppButton'
 import AppErrorMessage from '../../../components/shared/AppErrorMessage'
 import AppSpinner from '../../../components/shared/AppSpinner'
@@ -83,7 +83,7 @@ function GroupDetailPage() {
         <>
           <InviteCodeDisplay inviteCode={group.inviteCode} />
           <GroupStatsBar group={group} />
-          <GroupTabs groupId={groupId} onTabOpen={handleTabOpen} />
+          <div className="flex flex-wrap items-center justify-between gap-3"><GroupTabs groupId={groupId} onTabOpen={handleTabOpen} /><AppButton variant="secondary" size="sm" label={<><ChartNoAxesCombined className="h-4 w-4" />Guruh tahlili</>} onClick={() => navigate(ROUTES.TEACHER_ANALYTICS.replace(':groupId', groupId))} /></div>
         </>
       )}
 

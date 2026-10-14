@@ -9,6 +9,14 @@ export const useTestStore = create((set) => ({
   currentAnswers: {},
 
   setTestList: (testList) => set({ testList: Array.isArray(testList) ? testList : [] }),
+  updateTest: (testId, updates) => set((state) => ({
+    testList: state.testList.map((test) => test.id === testId ? { ...test, ...updates } : test),
+  })),
+  upsertTest: (test) => set((state) => ({
+    testList: state.testList.some((item) => item.id === test.id)
+      ? state.testList.map((item) => item.id === test.id ? { ...item, ...test } : item)
+      : [...state.testList, test],
+  })),
   setActiveTest: (activeTest) => set({ activeTest }),
   setCurrentQuestion: (currentQuestion) => set({ currentQuestion }),
   setTestStatus: (testStatus) => set({ testStatus }),

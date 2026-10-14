@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { PageHeader, AppSpinner, EmptyState } from '../../../components/shared'
+import AppToast from '../../../components/shared/AppToast'
 import TestListCard from '../../../components/test-management/TestListCard'
 import useTestList from '../../../hooks/test-management/useTestList'
 import ROUTES from '../../../constants/routes'
@@ -55,6 +56,7 @@ export default function TestsPage() {
                     />
                 ))}
             </div>
+            <AppToast />
         </div>
     )
 }
