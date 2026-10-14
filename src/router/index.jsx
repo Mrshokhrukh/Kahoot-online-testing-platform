@@ -13,6 +13,9 @@ import StudentGroupsPage from '../pages/student/StudentGroupsPage'
 import StudentJoinPage from '../pages/student/StudentJoinPage'
 import StudentResultsPage from '../pages/student/StudentResultsPage'
 import StudentResultDetailPage from '../pages/student/StudentResultDetailPage'
+import TestWaitingPage from '../pages/test-session/TestWaitingPage'
+import TestActivePage from '../pages/test-session/TestActivePage'
+import TestCompletePage from '../pages/test-session/TestCompletePage'
 import TeacherDashboardPage from '../pages/teacher/dashboard/TeacherDashboardPage'
 import TeacherProfilePage from '../pages/teacher/dashboard/TeacherProfilePage'
 import MembersPage from '../pages/teacher/members/MembersPage'
@@ -107,9 +110,9 @@ const router = createBrowserRouter([
   {
     element: <TestSessionRoutes />,
     children: [
-      { path: ROUTES.TEST_WAITING, element: <PlaceholderPage title="Test boshlanishini kuting" /> },
-      { path: ROUTES.TEST_ACTIVE, element: <PlaceholderPage title="Test ishlash" /> },
-      { path: ROUTES.TEST_COMPLETE, element: <PlaceholderPage title="Test yakunlandi" /> },
+      { path: ROUTES.TEST_WAITING, element: <TestWaitingPage /> },
+      { path: ROUTES.TEST_ACTIVE, element: <TestActivePage /> },
+      { path: ROUTES.TEST_COMPLETE, element: <TestCompletePage /> },
     ],
   },
   { path: '*', element: <MissingPage /> },
