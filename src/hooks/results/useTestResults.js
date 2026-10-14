@@ -13,24 +13,24 @@ function compareScoreItems(firstItem, secondItem, sortField) {
 
 function useResultsLoader(testId) {
   const [testResults, setTestResults] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [loadedTestId, setLoadedTestId] = useState(null)
   const [loadError, setLoadError] = useState(null)
 
   useEffect(() => {
-    if (!testId) {
-      setLoadError(MISSING_TEST_ID_MESSAGE)
-      setIsLoading(false)
-      return undefined
-    }
-    setIsLoading(true)
+    if (!testId) return undefined
     const timerId = setTimeout(() => {
       setTestResults(mockTestResults)
-      setIsLoading(false)
+      setLoadError(null)
+      setLoadedTestId(testId)
     }, MOCK_LOAD_DELAY_MS)
     return () => clearTimeout(timerId)
   }, [testId])
 
-  return { testResults, isLoading, loadError }
+  return {
+    testResults,
+    isLoading: Boolean(testId) && loadedTestId !== testId,
+    loadError: testId ? loadError : MISSING_TEST_ID_MESSAGE,
+  }
 }
 
 function useScoreSort(scoreList) {

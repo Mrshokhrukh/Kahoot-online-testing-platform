@@ -39,7 +39,7 @@ function GroupResultsPage() {
   }
 
   const handleTestSelect = (testId) => {
-    navigate(ROUTES.TEST_RESULTS.replace(':testId', testId))
+    navigate(ROUTES.TEACHER_RESULTS.replace(':testId', testId))
   }
 
   return (

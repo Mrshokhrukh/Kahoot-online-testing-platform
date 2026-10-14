@@ -29,6 +29,8 @@ import GroupNewPage from '../pages/teacher/groups/GroupNewPage'
 import GroupDetailPage from '../pages/teacher/groups/GroupDetailPage'
 import GroupSettingsPage from '../pages/teacher/groups/GroupSettingsPage'
 import MonitoringPage from '../pages/teacher/monitoring/MonitoringPage'
+import TestResultsPage from '../pages/teacher/results/TestResultsPage'
+import GroupResultsPage from '../pages/teacher/results/GroupResultsPage'
 
 function RootRedirect() {
   const currentUser = useAuthStore((state) => state.currentUser)
@@ -59,7 +61,6 @@ function TestSessionRoutes() {
 
 const teacherPlaceholderRoutes = [
   [ROUTES.TEACHER_TEST_CONFIG, 'Test sozlamalari'],
-  [ROUTES.TEACHER_RESULTS, 'Test natijalari'],
   [ROUTES.TEACHER_ANALYTICS, 'Guruh tahlili'],
   [ROUTES.STUDENT_ANALYTICS, 'O‘quvchi tahlili'],
 ]
@@ -88,6 +89,8 @@ const router = createBrowserRouter([
       { path: ROUTES.TEACHER_GROUP, element: <GroupDetailPage /> },
       { path: `${ROUTES.TEACHER_GROUP}/settings`, element: <GroupSettingsPage /> },
       { path: ROUTES.TEACHER_MONITOR, element: <MonitoringPage /> },
+      { path: ROUTES.TEACHER_RESULTS, element: <TestResultsPage /> },
+      { path: ROUTES.TEACHER_GROUP_RESULTS, element: <GroupResultsPage /> },
       ...teacherPlaceholderRoutes.map(([path, title]) => ({ path, element: <PlaceholderPage title={title} /> })),
     ],
   },

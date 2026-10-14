@@ -34,21 +34,20 @@ function useGroupAnalytics(groupId) {
   const [progressList, setProgressList] = useState([])
   const [studentComparisonList, setStudentComparisonList] = useState([])
   const [dateRange, setDateRange] = useState(FILTER_RANGE_ALL)
-  const [isLoading, setIsLoading] = useState(true)
+  const [loadedGroupId, setLoadedGroupId] = useState(null)
   const [loadError, setLoadError] = useState(null)
 
   useEffect(() => {
-    setIsLoading(true)
-    setLoadError(null)
-
     const timerId = setTimeout(() => {
       try {
         setProgressList(mockGroupProgressData)
         setStudentComparisonList(mockStudentComparisonData)
+        setLoadError(null)
       } catch {
         setLoadError(LOAD_ERROR_MESSAGE)
+      } finally {
+        setLoadedGroupId(groupId)
       }
-      setIsLoading(false)
     }, MOCK_API_DELAY)
 
     return () => clearTimeout(timerId)
@@ -68,7 +67,7 @@ function useGroupAnalytics(groupId) {
     studentComparisonList,
     dateRange,
     handleDateRangeChange,
-    isLoading,
+    isLoading: Boolean(groupId) && loadedGroupId !== groupId,
     loadError,
   }
 }

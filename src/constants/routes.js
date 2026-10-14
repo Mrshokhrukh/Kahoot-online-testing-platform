@@ -10,6 +10,7 @@ export const ROUTES = {
   TEACHER_GROUPS: '/teacher/groups',
   TEACHER_GROUP_NEW: '/teacher/groups/new',
   TEACHER_GROUP: '/teacher/groups/:groupId',
+  TEACHER_GROUP_RESULTS: '/teacher/groups/:groupId/results',
   TEACHER_MEMBERS: '/teacher/groups/:groupId/members',
   TEACHER_LESSONS: '/teacher/groups/:groupId/lessons',
   TEACHER_LESSON_NEW: '/teacher/groups/:groupId/lessons/new',

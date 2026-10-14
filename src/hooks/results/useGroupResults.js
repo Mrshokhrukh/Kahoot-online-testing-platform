@@ -6,24 +6,24 @@ const MISSING_GROUP_ID_MESSAGE = "Guruh aniqlanmadi. Guruhlar ro'yxatiga qaytib,
 
 function useGroupResults(groupId) {
   const [groupResults, setGroupResults] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [loadedGroupId, setLoadedGroupId] = useState(null)
   const [loadError, setLoadError] = useState(null)
 
   useEffect(() => {
-    if (!groupId) {
-      setLoadError(MISSING_GROUP_ID_MESSAGE)
-      setIsLoading(false)
-      return undefined
-    }
-    setIsLoading(true)
+    if (!groupId) return undefined
     const timerId = setTimeout(() => {
       setGroupResults(mockGroupResults)
-      setIsLoading(false)
+      setLoadError(null)
+      setLoadedGroupId(groupId)
     }, MOCK_LOAD_DELAY_MS)
     return () => clearTimeout(timerId)
   }, [groupId])
 
-  return { groupResults, isLoading, loadError }
+  return {
+    groupResults,
+    isLoading: Boolean(groupId) && loadedGroupId !== groupId,
+    loadError: groupId ? loadError : MISSING_GROUP_ID_MESSAGE,
+  }
 }
 
 export default useGroupResults
