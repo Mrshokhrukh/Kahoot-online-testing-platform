@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { mockLessonGroupList, mockLessonList } from '../../mocks/lessonsMock'
 import { MOCK_API_DELAY } from '../../constants/appConstants'
+import { useLessonStore } from '../../store/lessonStore'
 
 const LOAD_ERROR_MESSAGE =
   'Darslarni yuklab bo\'lmadi. Sahifani yangilab, qayta urinib ko\'ring.'
@@ -24,18 +25,21 @@ function loadGroupLessons(groupId) {
 
 function useLessonList(groupId) {
   const [loadResult, setLoadResult] = useState(null)
+  const setLessonList = useLessonStore((state) => state.setLessonList)
 
   useEffect(() => {
     const timerId = setTimeout(() => {
       try {
-        setLoadResult({ groupId, loadError: null, ...loadGroupLessons(groupId) })
+        const groupLessons = loadGroupLessons(groupId)
+        setLessonList(groupLessons.lessonList)
+        setLoadResult({ groupId, loadError: null, ...groupLessons })
       } catch {
         setLoadResult({ groupId, loadError: LOAD_ERROR_MESSAGE, lessonList: [], groupName: '' })
       }
     }, MOCK_API_DELAY)
 
     return () => clearTimeout(timerId)
-  }, [groupId])
+  }, [groupId, setLessonList])
 
   const isLoading = !loadResult || loadResult.groupId !== groupId
   if (isLoading) return { lessonList: [], groupName: '', isLoading, loadError: null }

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { mockLessonList } from '../../mocks/lessonsMock'
 import { MOCK_API_DELAY } from '../../constants/appConstants'
 import { ROUTES } from '../../constants/routes'
+import { useLessonStore } from '../../store/lessonStore'
 
 const MIN_CONTENT_LENGTH = 50
 const MAX_TOPIC_LENGTH = 30
@@ -76,6 +77,8 @@ function useTopicList() {
 
 function useLessonForm(groupId) {
   const navigate = useNavigate()
+  const addLesson = useLessonStore((state) => state.addLesson)
+  const setActiveLesson = useLessonStore((state) => state.setActiveLesson)
   const [lessonNumber, setLessonNumber] = useState(() => getNextLessonNumber(groupId))
   const [lessonTitle, setLessonTitle] = useState('')
   const [lessonDate, setLessonDate] = useState(getTodayIsoDate)
@@ -96,6 +99,8 @@ function useLessonForm(groupId) {
     const formValues = { lessonNumber, lessonTitle, lessonDate, lessonContent, topicList: topicState.topicList }
     setTimeout(() => {
       const savedLesson = saveMockLesson(groupId, formValues)
+      addLesson(savedLesson)
+      setActiveLesson(savedLesson)
       const nextRoute = shouldGenerateTest
         ? ROUTES.TEACHER_AI_GENERATE.replace(LESSON_ID_PARAM, savedLesson.id)
         : ROUTES.TEACHER_LESSONS.replace(GROUP_ID_PARAM, groupId)
