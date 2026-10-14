@@ -1,10 +1,13 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createBrowserRouter, Link, Navigate, Outlet, useNavigate } from 'react-router-dom'
+import { createBrowserRouter, Link, Navigate, Outlet } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { ROUTES } from '../constants/routes'
 import { USER_ROLES } from '../constants/testConstants'
-import { AppButton, AppLayout } from '../components/shared'
+import { AppLayout } from '../components/shared'
 import ProtectedRoute from './ProtectedRoute'
+import LoginPage from '../pages/auth/LoginPage'
+import RegisterPage from '../pages/auth/RegisterPage'
+import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage'
 import StudentDashboardPage from '../pages/student/StudentDashboardPage'
 import StudentGroupsPage from '../pages/student/StudentGroupsPage'
 import StudentJoinPage from '../pages/student/StudentJoinPage'
@@ -27,23 +30,6 @@ function RootRedirect() {
   if (currentUser?.role === USER_ROLES.TEACHER) return <Navigate to={ROUTES.TEACHER_DASHBOARD} replace />
   if (currentUser?.role === USER_ROLES.STUDENT) return <Navigate to={ROUTES.STUDENT_DASHBOARD} replace />
   return <Navigate to={ROUTES.LOGIN} replace />
-}
-
-function LoginPlaceholder() {
-  const setCurrentUser = useAuthStore((state) => state.setCurrentUser)
-  const navigate = useNavigate()
-
-  function handleDemoLogin(role) {
-    const name = role === USER_ROLES.TEACHER ? 'Sardor Usmonov' : 'Shaxruz Ahmedov'
-    setCurrentUser({ id: `demo-${role}`, name, role })
-    navigate(role === USER_ROLES.TEACHER ? ROUTES.TEACHER_DASHBOARD : ROUTES.STUDENT_DASHBOARD, { replace: true })
-  }
-
-  return <AppLayout><section className="mx-auto flex max-w-lg flex-col items-center gap-4 rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm">
-    <h1 className="text-2xl font-bold text-gray-900">EduTest</h1>
-    <p className="text-sm text-gray-600">Kirish sahifasi hali tayyor emas. Hozircha platformani sinash uchun rolni tanlang.</p>
-    <div className="flex flex-wrap justify-center gap-3"><AppButton label="O‘qituvchi sifatida kirish" onClick={() => handleDemoLogin(USER_ROLES.TEACHER)} /><AppButton label="O‘quvchi sifatida kirish" variant="secondary" onClick={() => handleDemoLogin(USER_ROLES.STUDENT)} /></div>
-  </section></AppLayout>
 }
 
 function PlaceholderPage({ title }) {
@@ -79,9 +65,9 @@ const teacherPlaceholderRoutes = [
 
 const router = createBrowserRouter([
   { path: '/', element: <RootRedirect /> },
-  { path: ROUTES.LOGIN, element: <LoginPlaceholder /> },
-  { path: ROUTES.REGISTER, element: <PlaceholderPage title="Ro‘yxatdan o‘tish" /> },
-  { path: ROUTES.FORGOT_PASSWORD, element: <PlaceholderPage title="Parolni tiklash" /> },
+  { path: ROUTES.LOGIN, element: <LoginPage /> },
+  { path: ROUTES.REGISTER, element: <RegisterPage /> },
+  { path: ROUTES.FORGOT_PASSWORD, element: <ForgotPasswordPage /> },
   {
     element: <TeacherRoutes />,
     children: [
