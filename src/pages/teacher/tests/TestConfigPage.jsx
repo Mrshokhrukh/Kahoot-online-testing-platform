@@ -40,7 +40,7 @@ function TestConfigForm({ testId }) {
     if (testList.length === 0) setTestList(mockTestList)
   }, [setTestList, testList.length])
 
-  if (!test) return <GroupPageLayout><AppErrorMessage message="Test topilmadi. Testlar ro'yxatiga qayting." /></GroupPageLayout>
+  if (!test) return <GroupPageLayout activeRoute={ROUTES.TEACHER_TESTS}><AppErrorMessage message="Test topilmadi. Testlar ro'yxatiga qayting." /></GroupPageLayout>
 
   function handleSave(event) {
     event.preventDefault()
@@ -56,7 +56,7 @@ function TestConfigForm({ testId }) {
     navigate(ROUTES.TEACHER_TESTS)
   }
 
-  return <GroupPageLayout>
+  return <GroupPageLayout activeRoute={ROUTES.TEACHER_TESTS}>
     <PageHeader title="Test sozlamalari" subtitle={`${test.name} · ${test.groupName}`} action={<AppButton variant="ghost" size="sm" label={<><ArrowLeft className="h-4 w-4" />Testlarga qaytish</>} onClick={() => navigate(ROUTES.TEACHER_TESTS)} />} />
     {isReadOnly && <div className="flex items-start gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"><LockKeyhole className="mt-0.5 h-5 w-5 shrink-0" /><p>Test {test.status === 'active' ? 'boshlangan' : 'yakunlangan'}; sozlamalar faqat ko‘rish uchun ochiq.</p></div>}
     <form onSubmit={handleSave} className="grid gap-5 lg:grid-cols-[1fr_0.85fr]">

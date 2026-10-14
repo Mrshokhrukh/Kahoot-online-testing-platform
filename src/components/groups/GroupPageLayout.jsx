@@ -9,14 +9,14 @@ const TEACHER_NAV_ITEMS = [
   { label: 'Testlar', route: ROUTES.TEACHER_TESTS, icon: 'tests' },
 ]
 
-function GroupPageLayout({ children }) {
+function GroupPageLayout({ children, activeRoute = ROUTES.TEACHER_GROUPS }) {
   const navigate = useNavigate()
 
   return (
     <div className="min-h-screen bg-gray-50 lg:pl-60">
       <AppSidebar
         navItems={TEACHER_NAV_ITEMS}
-        activeRoute={ROUTES.TEACHER_GROUPS}
+        activeRoute={activeRoute}
         onNavigate={navigate}
       />
       <AppLayout>
