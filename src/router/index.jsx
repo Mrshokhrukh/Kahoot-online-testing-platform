@@ -14,6 +14,13 @@ import TeacherDashboardPage from '../pages/teacher/dashboard/TeacherDashboardPag
 import TeacherProfilePage from '../pages/teacher/dashboard/TeacherProfilePage'
 import MembersPage from '../pages/teacher/members/MembersPage'
 import StudentProfilePage from '../pages/teacher/members/StudentProfilePage'
+import LessonsPage from '../pages/teacher/lessons/LessonsPage'
+import LessonNewPage from '../pages/teacher/lessons/LessonNewPage'
+import LessonDetailPage from '../pages/teacher/lessons/LessonDetailPage'
+import AiGeneratePage from '../pages/teacher/ai-generation/AiGeneratePage'
+import TestPreviewPage from '../pages/teacher/ai-generation/TestPreviewPage'
+import TestEditPage from '../pages/teacher/ai-generation/TestEditPage'
+import TestsPage from '../pages/teacher/tests/TestsPage'
 
 function RootRedirect() {
   const currentUser = useAuthStore((state) => state.currentUser)
@@ -63,13 +70,6 @@ const teacherPlaceholderRoutes = [
   [ROUTES.TEACHER_GROUPS, 'Guruhlar'],
   [ROUTES.TEACHER_GROUP_NEW, 'Yangi guruh'],
   [ROUTES.TEACHER_GROUP, 'Guruh'],
-  [ROUTES.TEACHER_LESSONS, 'Darslar'],
-  [ROUTES.TEACHER_LESSON_NEW, 'Yangi dars'],
-  [ROUTES.TEACHER_LESSON, 'Dars'],
-  [ROUTES.TEACHER_AI_GENERATE, 'AI test yaratish'],
-  [ROUTES.TEACHER_TEST_PREVIEW, 'Test ko‘rinishi'],
-  [ROUTES.TEACHER_TEST_EDIT, 'Testni tahrirlash'],
-  [ROUTES.TEACHER_TESTS, 'Testlar'],
   [ROUTES.TEACHER_TEST_CONFIG, 'Test sozlamalari'],
   [ROUTES.TEACHER_MONITOR, 'Test nazorati'],
   [ROUTES.TEACHER_RESULTS, 'Test natijalari'],
@@ -89,6 +89,13 @@ const router = createBrowserRouter([
       { path: ROUTES.TEACHER_PROFILE, element: <TeacherProfilePage /> },
       { path: ROUTES.TEACHER_MEMBERS, element: <MembersPage /> },
       { path: `${ROUTES.TEACHER_MEMBERS}/:studentId`, element: <StudentProfilePage /> },
+      { path: ROUTES.TEACHER_LESSONS, element: <LessonsPage /> },
+      { path: ROUTES.TEACHER_LESSON_NEW, element: <LessonNewPage /> },
+      { path: ROUTES.TEACHER_LESSON, element: <LessonDetailPage /> },
+      { path: ROUTES.TEACHER_AI_GENERATE, element: <AiGeneratePage /> },
+      { path: ROUTES.TEACHER_TEST_PREVIEW, element: <TestPreviewPage /> },
+      { path: ROUTES.TEACHER_TEST_EDIT, element: <TestEditPage /> },
+      { path: ROUTES.TEACHER_TESTS, element: <TestsPage /> },
       ...teacherPlaceholderRoutes.map(([path, title]) => ({ path, element: <PlaceholderPage title={title} /> })),
     ],
   },
