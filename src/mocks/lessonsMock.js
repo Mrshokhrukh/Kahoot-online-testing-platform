@@ -18,6 +18,7 @@ export const mockLessonList = [
       'Bugun biz React nima ekanligini, komponent tushunchasini, JSX sintaksisini o\'rgandik. Virtual DOM qanday ishlashi va nima uchun React tez ekanligi haqida gaplashdik. Birinchi funksional komponentimizni yozdik va uni sahifaga chiqardik.',
     topics: ['React', 'JSX', 'Komponent'],
     testStatus: 'completed',
+    testId: 't1',
   },
   {
     id: 'l2',
@@ -30,6 +31,7 @@ export const mockLessonList = [
       'useState hook ni o\'rgandik. State nima, qanday o\'zgaradi va nima uchun komponent qayta render bo\'ladi. useEffect bilan side effect yozdik: ma\'lumot yuklash, taymer o\'rnatish va cleanup funksiyasi orqali tozalash.',
     topics: ['useState', 'useEffect', 'Hooks'],
     testStatus: 'none',
+    testId: null,
   },
   {
     id: 'l3',
@@ -42,6 +44,7 @@ export const mockLessonList = [
       'Props orqali ota komponentdan bola komponentga ma\'lumot uzatishni o\'rgandik. Callback funksiyalar yordamida bola komponentdan ota komponentga hodisa yuborish va state ni yuqoriga ko\'tarish (lifting state up) usulini ko\'rib chiqdik.',
     topics: ['Props', 'Callback', 'Lifting state'],
     testStatus: 'scheduled',
+    testId: 't2',
   },
   {
     id: 'l4',
@@ -54,5 +57,6 @@ export const mockLessonList = [
       'let, const va var orasidagi farqni o\'rgandik. JavaScript dagi primitiv ma\'lumot turlari: string, number, boolean, null, undefined. typeof operatori yordamida turini aniqlash va turlarni o\'zgartirishni mashq qildik.',
     topics: ['let', 'const', 'typeof'],
     testStatus: 'completed',
+    testId: 't3',
   },
 ]

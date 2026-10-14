@@ -48,6 +48,7 @@ function saveMockLesson(groupId, formValues) {
     content: formValues.lessonContent.trim(),
     topics: formValues.topicList,
     testStatus: INITIAL_TEST_STATUS,
+    testId: null,
   }
   mockLessonList.push(savedLesson)
   return savedLesson
